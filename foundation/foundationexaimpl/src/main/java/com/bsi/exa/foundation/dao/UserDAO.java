@@ -80,7 +80,6 @@ public class UserDAO extends CommonDAO {
     public Future<User> getById(String userId) {
         
         Future<User> result = Future.future();
-         System.out.println("userid : "+userId);
         queryScriptWihtParam("getById", User.class, "userId", userId)
             .setHandler(ret -> {
                 
@@ -90,6 +89,7 @@ public class UserDAO extends CommonDAO {
                 
                 } else {
                     result.fail(ret.cause());
+                    System.out.println("error : " +ret.cause().toString());
                 }
                 
             });

@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
                         result.fail(new CodedException(Errors.LOGIN_USER_NOT_FOUND));
                 }
                 else
-                    System.out.println("error : " +ret.result());
+                    
                     result.fail(new CodedException(Errors.LOGIN_USER_NOT_FOUND));
             });
         

@@ -1,3 +1,8 @@
+--getById
+select *
+from login 
+where userid = '[[userId]]'
+
 --search
 select
     *
@@ -44,8 +49,3 @@ su.*,
 sr."name" as roleName
 from somasi_user su 
 left join somasi_role sr on su.roleid = sr.roleid 
-
---getById
-select *
-from login 
-where userid = '{{userId}}'
