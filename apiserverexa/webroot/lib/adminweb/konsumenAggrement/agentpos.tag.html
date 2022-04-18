@@ -1,0 +1,308 @@
+<agentpos>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Assagin Agent Pos</span>
+				<br>
+				<span style="font-size: 16px; color: #008080">List Agent Pos</span>
+			</div>			
+		</div>
+            <div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		<div class="ui card" style="width: 100%; height: calc(100% - 70px)">
+			<div class="content" style="margin: 20px;">
+
+				<div class="ui form" style="padding: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="1px">&nbsp;</td>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">									
+									<div class="three wide field">
+                                                                            <label>&nbsp;</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy">
+                                                                                        <option value="NamaDebitur" disabled selected>Search By</option>
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="NoAgreement">No Agreement</option>
+										    	<option value="NomorPolisi">Nomor Polisi</option>
+                                                                                        <option value="TanggalUpload" id="date">Tanggal Upload</option>
+			    							</select>
+								  	</div>
+                                                                        <div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+                                                                            <div class="ui calendar" id="rangestart" ref="startDate">
+                                                                              <div class="ui input left icon">
+                                                                                <i class="calendar icon"></i>
+                                                                                <input type="text" placeholder="Start">
+                                                                              </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+                                                                            <div class="ui calendar" id="rangeend" ref="endDate">
+                                                                              <div class="ui input left icon">
+                                                                                <i class="calendar icon"></i>
+                                                                                <input type="text" placeholder="End">
+                                                                              </div>
+                                                                            </div>
+                                                                        </div>
+									<div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>										
+							  	</div>
+							</td>
+							<td width="*" align="right">
+								
+							</td>	
+                                                        <td width="*" align="right">
+								<button class="ui button float right blue" style="margin-top: 10px" onclick={ btnAddAgentPosClick }>Add</button>	
+							</td>
+						</tr>
+					</table>	
+				</div>
+                                
+				<div style="padding: 5px; height: calc(100% - 165px)">
+					<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+						<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+				  			<thead>
+				    			<tr>
+				    				<th style="250px: -webkit-sticky;position: sticky;top: 0;">No.</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">Username</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nama</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Kode Area</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Area</th>
+				      			</tr>
+				  			</thead>
+							<tbody>
+								<tr each={ item in listAgentPos}>
+									<td>{ item.idAgentpos }</td>
+                                                                        <td>{ item.username }</td>
+                                                                        <td>{ item.nama }</td>
+                                                                        <td>{ item.codeArea }</td>
+                                                                        <td>{ item.area }</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+
+				</div>
+				<div style="position: absolute; bottom: 10px">
+					<div class="ui buttons">
+						<button class="ui icon button" onclick={ btnPrevClick }>
+							<i class="left chevron icon"></i>
+						</button>
+						<button each={ item in listPageNo } class="ui button">{ item }</button>
+						<button class="ui right icon button" onclick={ btnNextClick }>
+							<i class="right chevron icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+            </div>
+	</div>
+    
+        <div ref="mdlAgentPos" class="ui modal longer">
+		
+		<div class="header">Add Agent Pos</div>
+		<div class="scrolling image content">
+			
+			<form class="ui large form" style="width: 100%">
+
+				<div class="fields">
+					<div class="six wide field" ref="edtFrmCodeFrame">
+						<label>Username</label>
+						<input ref="edtFrmUsername" type="text">
+					</div>	
+					<div class="six wide field" ref="edtFrmNameFrame">
+					    <label>Name</label>
+					    <input ref="edtFrmName" type="text">
+				  	</div>
+				</div>
+				<div class="fields">
+					<div class="six wide field" onchange={ ddbKodeAreaSelect }>
+						<label>Kode Area</label>
+                                                <select class="ui fluid dropdown"  ref="edtFrmKodeArea">
+							<option each={ itemA in listMapping } value={ itemA.idMappingArea }>{ itemA.codeArea }</option>
+						</select>
+					</div>
+                                        <div class="six wide field" >
+						<label>Area</label>
+                                                <select class="ui fluid dropdown"  ref="edtFrmArea">
+							<option  each={ item in listDistrictRet } value={ item.districtId }>{ item.name }</option>
+						</select>
+					</div>
+				</div>
+                                <div class="actions" align="left">
+                                    <div class="ui approve button green">Save</div>
+                                    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+                                </div>
+			</form>	
+		</div>
+
+	<script>
+
+		var tag = this;
+		
+		tag.on("mount", function() {
+
+//			tag.updateProduct(1);
+                        
+                        tag.listAgentPOs();
+                        
+                        tag.listMappingArea();
+		});
+                
+                
+                btnAddAgentPosClick() {
+                    
+                    
+                    $(tag.refs.mdlAgentPos)
+				.modal({
+                                    
+                                    allowMultiple: true,
+						onApprove : function() {
+                                                    
+                                                    
+                                                    financeService.addAgent(
+                                                                            {
+                                                                                username:tag.refs.edtFrmUsername.value,
+                                                                                nama:tag.refs.edtFrmName.value,
+                                                                                password:"somasi123",
+                                                                                idMappingArea:tag.refs.edtFrmKodeArea.value,
+                                                                                districtId:tag.refs.edtFrmArea.value
+                                                                            },
+                                                                            function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.listAgentPOs();
+														$(tag.refs.mdlAgentPos).modal('hide');
+														app.alert("Save Succes");
+													}
+													else
+														app.alert(errorMsg);
+												});
+                                                }
+                                    
+                                })
+                                .modal('show');
+                }
+
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+                    
+                    tag.currentPage = page;
+		
+			financeService.search(tag.refs.edtOrderBy.value,
+                                            tag.refs.edtFilter.value,
+                                            sDateStr,
+                                            eDateStr,
+                                            tag.currentPage,
+				function(ret, errorCode, errorMsg) {
+				
+                                if(errorMsg == null) {
+                                    
+                                    if(ret.length > 0) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();	
+                                    } else {
+                                        
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+						
+				});
+                }
+                
+                listAgentPOs() {
+
+			addressService.listAgent(
+				function(ret, errorCode, errorMsg) {
+                                    
+                                    if(errorMsg == null) {
+                                        
+                                        if(ret.length > 0 ) {
+                                            
+                                            tag.listAgentPos = ret;
+                                            tag.update();
+                                        } else {
+                                            app.alert("Data Not Found");
+                                        }
+                                    } else {
+                                        app.alert(errorMsg);
+                                    }
+					
+				});
+		}
+                
+
+		updateProduct1() {
+
+			financeService.listall(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct = ret;
+					tag.update();
+				});
+		}
+                
+                listMappingArea() {
+                    financeService.listMapping (
+                            
+                            function(ret, errorCode, errorMsg) {
+
+					tag.listMapping = ret;
+					tag.update();
+                                        
+                                        setTimeout(
+						function() {
+
+							tag.ddbKodeAreaSelect();
+						}, 100);
+				});
+                }
+                
+                ddbKodeAreaSelect() {
+                    
+                    financeService.listByCode(tag.refs.edtFrmKodeArea.value,
+                    
+                        function(ret, errorCode, errorMsg) {
+
+					tag.listDistrictRet = ret;
+					tag.update();
+				});
+                    
+                }
+			
+	</script>
+</agentpos>

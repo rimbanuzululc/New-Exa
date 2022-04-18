@@ -1,0 +1,433 @@
+<menu>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Menu</span>
+				<br>
+				<span style="font-size: 16px; color: #999999">List Of Menu</span>
+			</div>			
+		</div>
+		<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+			<div class="ui card" style="width: 100%; height: calc(95% - 70px)">
+				<div class="content" style="margin: 20px;height: 100%">
+					<div class="ui form">
+						<table width="100%">
+							<tr>
+								<td width="1500px">
+									<div class="fields" style="padding-left: 8px !important">									
+										<div class="three wide field">
+										    <label>Perent</label>
+											    <select class="ui fluid dropdown"  ref="listParentMenu">
+											    	<option  value="-1">All</option>
+											    	<option  value="0">Root</option>
+				    								<option each={ item in listParentMenu } value={ item.menuId }>{ item.title }</option>
+				    							</select>
+									  	</div>
+									  	<div class="three wide field" >
+											<label>Filter :</label>
+											<div class="ui action input">
+												<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+	                        					document.getElementById('btnsearch').click()">
+												<button id="btnsearch"class="ui button" onclick={ btnSearchClick }>Search</button>
+											</div>
+										</div>										
+								  	</div>	
+								</td>
+								<td width="*" align="right">
+									<button class="ui button float right blue" style="margin-top: 10px" onclick={ btnAddClick }>Add</button>	
+								</td>	
+							</tr>
+
+						</table>	
+					</div>
+					<div style="padding: 5px; height: calc(100% - 100px)">
+						<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+							<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+					  			<thead>
+					    			<tr>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">menuId</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">title</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">target</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">parentId</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">displayOrder</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">icon</th>
+					      				<th width="250px" style="position: -webkit-sticky;position: sticky;top: 0;">Action</th>
+					    			</tr>
+					  			</thead>
+								<tbody>
+									<tr each={ item in listMenu}>
+										<td>{ item.menuId }</td>
+										<td>{ item.title }</td>
+										<td>{ item.target }</td>
+										<td>{ item.parentId }</td>
+										<td>{ item.displayOrder }</td>
+										<td>{ item.icon }</td>
+										<td>
+											<button class="ui compact button" onclick={ btnEditClick }>Edit</button>
+											<button class="ui compact button" onclick={ btnDeleteClick }>Delete</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+					
+						<div style="position: absolute; bottom: 10px">
+							<div class="ui buttons">
+								<button class="ui icon button" onclick={ btnPrevClick }>
+									<i class="left chevron icon"></i>
+								</button>
+								<button each={ item in listPageNo } class="ui button">{ item }</button>
+								<button class="ui right icon button" onclick={ btnNextClick }>
+									<i class="right chevron icon"></i>
+								</button>
+							</div>
+						</div>
+					</div>	
+				</div>			
+			</div>		
+		</div>
+	</div>
+
+	<div ref="mdlMenu" class="ui modal longer">
+		
+		<div class="header">{ modalHeader }</div>
+		<div class="scrolling image content">
+			
+			<form class="ui form" style="width: 100%">
+
+				<div class="fields">
+					
+					<div class="twelve wide field" >
+						<div class="fields">
+							<div class="six wide field" ref="edtFrmTitleFrame">
+								<label>title</label>
+								<input ref="edtFrmTitle" type="text">
+							</div>	
+							<div class="ten wide field" ref="edtFrmTargetFrame">
+							    <label>target</label>
+							    <input ref="edtFrmTarget" type="text">
+						  	</div>
+					  	</div>	
+					  	<div class="fields">
+							<div class="six wide field" ref="ddbFrmParentFrame">
+								<label>Parent Category</label>
+								<select class="ui fluid dropdown" ref="ddbFrmParent">
+									<option value="0"></option>
+									<option each={ item in listParent } value={ item.menuId }>{ item.title }</option>
+    							</select>
+							</div>
+					  	</div>
+					  	<div class="fields">
+							<div class="six wide field" ref="edtFrmDisplayOrderFrame">
+								<label>displayOrder</label>
+								<input ref="edtFrmDisplayOrder" type="number">
+							</div>	
+							<div class="ten wide field" ref="edtFrmIconFrame">
+							    <label>icon</label>
+							    <input ref="edtFrmIcon" type="text">
+						  	</div>
+					  	</div>	
+					</div>
+				</div>
+			</form>	
+		</div>
+		<div class="actions">
+		    <div class="ui approve button green">Save</div>
+		    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+		</div>
+	</div>
+
+	<script>
+		var tag = this;
+
+		tag.listMenu = [];
+		tag.listParentMenu = [];
+		tag.listParent = [];
+		tag.listPageNo = [];
+
+		
+		tag.on("mount", function() {
+
+			$(tag.refs.listParentMenu).dropdown();
+			tag.updateData(1);
+			tag.updateddbperent();
+
+		});
+
+		updateddbperent() {
+
+			userService.getAllMenu(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listParentMenu = ret;
+					tag.update();
+				
+					setTimeout(
+						function() {
+
+							tag.btnSearchClick();
+						}, 100);
+				});
+		}
+
+		btnSearchClick() {
+
+			tag.updateData(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateData(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateData(tag.currentPage + 1);
+		}
+
+		updateData(page) {
+
+			tag.currentPage = page;
+
+			userService.searchMenu(tag.refs.edtFilter.value,
+										tag.refs.listParentMenu.value,
+										page,
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.maxPage = 10;
+						tag.listMenu = ret;
+						tag.update();
+
+					}
+					else
+						app.alert(errorMsg);
+				});
+
+			
+		}
+
+		btnAddClick() {
+
+			tag.modalHeader = "Add Menu";
+
+			tag.refs.edtFrmTitle.value ="";
+			tag.refs.edtFrmTarget.value = "";
+			tag.refs.edtFrmDisplayOrder.value ="";
+			tag.refs.edtFrmIcon.value = "";
+
+			tag.refs.edtFrmTitleFrame.classList.remove("error");
+			tag.refs.edtFrmTargetFrame.classList.remove("error");
+			tag.refs.edtFrmDisplayOrderFrame.classList.remove("error");
+			tag.refs.edtFrmIconFrame.classList.remove("error");
+			
+
+			tag.update();
+
+			$(tag.refs.ddbFrmParent).dropdown();
+
+			userService.getAllMenu(
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.listParent = ret;
+						tag.update();
+					}
+				});
+
+			$(tag.refs.mdlMenu)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmTitle.value == null || tag.refs.edtFrmTitle.value == "") {
+
+											tag.refs.edtFrmTitleFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmTitleFrame.classList.remove("error");
+										if (tag.refs.edtFrmTarget.value == null || tag.refs.edtFrmTarget.value == "") {
+
+											tag.refs.edtFrmTargetFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmTargetFrame.classList.remove("error");
+									
+										if (tag.refs.edtFrmDisplayOrder.value == null || tag.refs.edtFrmDisplayOrder.value == "") {
+
+											tag.refs.edtFrmDisplayOrderFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmDisplayOrderFrame.classList.remove("error");
+										if (tag.refs.edtFrmIcon.value == null || tag.refs.edtFrmIcon.value == "") {
+
+											tag.refs.edtFrmIconFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmIconFrame.classList.remove("error");
+										
+
+										if (cont) {
+
+											userService.addMenu(
+																{
+																	title: tag.refs.edtFrmTitle.value,
+																	target : tag.refs.edtFrmTarget.value,
+																	parentId : parseInt(tag.refs.ddbFrmParent.value),
+																	icon : tag.refs.edtFrmIcon.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														tag.updateddbperent();
+														$(tag.refs.mdlMenu).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnEditClick(e) {
+
+			
+			tag.modalHeader = "Edit Menu";
+
+			tag.refs.edtFrmTitle.value = e.item.item.title;
+			tag.refs.edtFrmTarget.value = e.item.item.target;
+			tag.refs.edtFrmDisplayOrder.value = e.item.item.displayOrder;
+			tag.refs.edtFrmIcon.value = e.item.item.icon;
+
+			tag.refs.edtFrmTitleFrame.classList.remove("error");
+			tag.refs.edtFrmTargetFrame.classList.remove("error");
+			tag.refs.edtFrmDisplayOrderFrame.classList.remove("error");
+			tag.refs.edtFrmIconFrame.classList.remove("error");
+			
+
+			tag.update();
+			$(tag.refs.ddbFrmParent).dropdown();
+
+			userService.getAllMenu(
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.listParent = ret;
+						tag.update();
+
+						setTimeout(
+						function() {
+
+							tag.refs.ddbFrmParent.value = e.item.item.parentId;
+						}, 100);	
+					}
+				});
+
+			$(tag.refs.mdlMenu)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmTitle.value == null || tag.refs.edtFrmTitle.value == "") {
+
+											tag.refs.edtFrmTitleFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmTitleFrame.classList.remove("error");
+										if (tag.refs.edtFrmTarget.value == null || tag.refs.edtFrmTarget.value == "") {
+
+											tag.refs.edtFrmTargetFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmTargetFrame.classList.remove("error");
+									
+										if (tag.refs.edtFrmDisplayOrder.value == null || tag.refs.edtFrmDisplayOrder.value == "") {
+
+											tag.refs.edtFrmDisplayOrderFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmDisplayOrderFrame.classList.remove("error");
+										if (tag.refs.edtFrmIcon.value == null || tag.refs.edtFrmIcon.value == "") {
+
+											tag.refs.edtFrmIconFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmIconFrame.classList.remove("error");
+										
+
+										if (cont) {
+
+											userService.addMenu(
+																{
+																	menuId : e.item.item.memuId,
+																	title: tag.refs.edtFrmTitle.value,
+																	target : tag.refs.edtFrmTarget.value,
+																	parentId : tag.refs.ddbFrmParent.value,
+																	displayOrder : tag.refs.edtFrmDisplayOrder.value,
+																	icon : tag.refs.edtFrmIcon.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														tag.updateddbperent();
+														$(tag.refs.mdlMenu).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnDeleteClick(e) {
+
+			app.confirm("Are you sure to delete Menu " + e.item.item.menuId + " ?",
+				function() {
+
+					userService.deleteMenu(e.item.item.menuId,
+						function(ret, errorCode, errorMsg) {
+
+							if (errorCode == null) {
+
+								tag.updateData(1);						
+							}
+							else
+								app.alert(errorMsg);
+						});
+				});			
+		}
+	</script>
+</menu>

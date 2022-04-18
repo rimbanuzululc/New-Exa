@@ -1,0 +1,517 @@
+<assign>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Assign Agent Pos</span>
+				<br>
+				<span style="font-size: 16px; color: #008080">List Agent Pos</span>
+			</div>			
+		</div>
+            <div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		<div class="ui card" style="width: 100%; height: calc(100% - 70px)">
+			<div class="content" style="margin: 20px;">
+
+				<div class="ui form" style="padding: 5px;">
+					<table width="100%">
+						<tr>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">									
+									<div class="three wide field">
+                                                                            <label>&nbsp;</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy" onchange={ orderBy }>
+                                                                                        <option value="NamaDebitur" disabled selected>Search By</option>
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="NoAgreement">No Agreement</option>
+										    	<option value="NomorPolisi">Nomor Polisi</option>
+                                                                                        <option value="TanggalUpload" id="date">Tanggal Upload</option>
+                                                                                        <option value="Area">Area Agent Pos</option>
+			    							</select>
+								  	</div>
+                                                                        <div class="three wide field" id="sDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangestart" ref="startDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="Start">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="three wide field" id="nDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangeend" ref="endDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="End">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+                                                                        
+                                                                    <div class="four wide field" id="areaAgent">
+                                                                        <label>&nbsp</label>
+                                                                        <select class="ui fluid dropdown"  ref="ddbState" onchange={ ddbStateSelect }>
+                                                                            <option value="AREA1">-- Area --</option>
+                                                                            <option each={ item in listStateRet } value={ item.codeArea }>{ item.codeArea }</option>
+                                                                        </select>
+                                                                    </div>
+                                                                        
+                                                                    <div class="four wide field" id="kecamatan">
+                                                                        <label>&nbsp</label>
+                                                                        <select class="ui fluid dropdown"  ref="ddbKecamatan" >
+                                                                            <option value="1911">-- Kecamatan --</option>
+                                                                            <option each={ item in listCityRet } value={ item.districtId }>{ item.name }</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <div class="three wide field" id="validater">
+                                                                <label>&nbsp;</label>
+                                                                        <button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+                                                                      </div>
+                                                                    <div class="three wide field" id="validaterAgent">
+                                                                <label>&nbsp;</label>
+                                                                        <button id="btnsearch" class="ui button" onclick={ btnSearchClickAgent }>Search</button>
+                                                                      </div>
+									<div class="three wide field" id="filterr">
+                                                                            <label>&nbsp;</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>										
+                                                                        
+							  	</div>
+                                                                
+                                                                
+							</td>
+							<td width="*" align="right">
+								
+							</td>	
+						</tr>
+					</table>	
+				</div>
+                                
+<!--                                <div class="ui form" style="padding: 10px;">
+					<table width="100%">
+						<tr>
+                                            		<td width="1px">&nbsp;</td>
+							<td width="1500px">
+                                        <div class="fields" style="padding-left: 8px !important">									
+                                        <div class="four wide field">
+                                                    <select class="ui fluid dropdown"  ref="ddbState" onchange={ ddbStateSelect }>
+                                                        <option value="1">-- Provinsi --</option>
+                                                        <option each={ item in listStateRet } value={ item.stateId }>{ item.name }</option>
+                                                    </select>
+                                        </div>
+                                        <div class="four wide field">
+                                                    <select clas    s="ui fluid dropdown"  ref="ddbCity" onchange={ ddbCitySelect }>
+                                                        <option value="1">-- Kota --</option>
+                                                        <option each={ item in listCityRet } value={ item.cityId } >{ item.name }</option>
+                                                    </select>
+                                        </div>
+                                        <div class="four wide field">
+                                                    <select clas    s="ui fluid dropdown"  ref="ddbKec" onchange={ ddbKecSelect }>
+                                                        <option value="1">-- Kecamatan --</option>
+                                                        <option each={ item in listDistrictRet } value={ item.districtId }>{ item.name }</option>
+                                                    </select>
+                                        </div>
+                                        <div class="four wide field">
+                                                    <select clas    s="ui fluid dropdown"  ref="ddbKel" onchange={ ddbKelSelect }>
+                                                        <option value="1">-- Kelurahan --</option>
+                                                        <option each={ item in listKelurahanRet } value={ item.subdistrictId }>{ item.name }</option>
+                                                    </select>
+                                        </div>    
+                                            </td>
+                                            <td width="*" align="right">
+
+                                            </td>	
+						</tr>
+					</table>	
+				</div>-->
+				<div style="padding: 5px; height: calc(100% - 165px)">
+					<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+						<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+				  			<thead>
+				    			<tr>
+				    				<th style="position: -webkit-sticky;position: sticky;top: 0;">Check All</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">No Aggrement</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Name Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">No Telp/HP Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Perjanjian</th>
+                                                                <!--<th style="250px: -webkit-sticky;position: sticky;top: 0;">Tahun Kendaraan</th>-->
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nomor Polisi Kendaraan</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Angsuran Per Bulan</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Sisa Outstanding Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Kronologis Singkat</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Upload</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nama Agent POS</th>
+                                                                <!--<th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Mulai Menunggak</th>-->
+                                                                <!--<th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP1</th>-->
+                                                                <!--<th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP2</th>-->
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 1</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 2</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Somasi</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Konfirm by Phone</th>
+				      			</tr>
+				  			</thead>
+							<tbody>
+								<tr each={ item in listProduct}>
+									<td><div class="ui checkbox">
+											<input type="checkbox" 
+											name ="tabCheckBox"
+											value= { item.konsumenId } >
+											<label>&nbsp;</label>
+										</div>
+									</td>
+									<td>{ item.noAggrement }</td>
+                                                                        <td>{ item.namaDebitur }</td>
+                                                                        <td>{ item.noTelp }</td>
+                                                                        <td>{ item.tglPerjanjian }</td>
+                                                                        <!--<td>{ item.tahunKendaraan }</td>-->
+                                                                        <td>{ item.nomorPolisi }</td>
+                                                                        <td>{ item.installment }</td>
+                                                                        <td>{ item.sisaOutstanding }</td>
+                                                                        <!--<td>{ item.tglMulaiMenunggak }</td>-->
+                                                                        <!--<td>{ item.tglSp1 }</td>-->
+                                                                        <!--<td>{ item.tglSp2 }</td>-->
+                                                                        <td>{ item.kronologi }</td>
+                                                                        <td>{ item.upload_date }</td>
+                                                                        <td>{ item.agentName }</td>
+                                                                        <td>{ item.sendSomasi1Date }</td>
+                                                                        <td>{ item.sendSomasi2Date }</td>
+                                                                        <td>{ item.statusSomasi }</td>
+                                                                        <td>{ item.statusByPhone }</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+                                <div style="position: absolute; bottom: 1px; left : 30%">
+					<div class="ui form">
+						<table width="100%">
+							<tr>
+								<td width="1500px">
+									<div class="fields" style="padding-left: 8px !important">									
+										<div class="three wide field">
+                                                                                    <label>&nbsp;</label>
+                                                                                    <label>&nbsp;</label>
+											    <select class="ui fluid dropdown"  ref="edtFrmAsigen">
+                                                                                                <option value="-">Agent Name</option>
+											    	<option each={ item in listAgent } value={ item.idAgentpos }>{ item.nama }</option>
+				    							</select>
+									  	</div>
+										<div class="three wide field" >
+											<label>&nbsp;</label>
+                                                                                        <label>&nbsp;</label>
+											<div class="ui button float right blue"  style="margin-left: 1px" onclick={ btnAssingn }>Assign</div> 
+										</div>										
+								  	</div>	
+								</td>
+								<td width="*" align="right">
+									
+								</td>	
+							</tr>
+						</table>	
+					</div>
+				</div>
+				<div style="position: absolute; bottom: 10px">
+					<div class="ui buttons">
+						<button class="ui icon button" onclick={ btnPrevClick }>
+							<i class="left chevron icon"></i>
+						</button>
+						<button each={ item in listPageNo } class="ui button">{ item }</button>
+						<button class="ui right icon button" onclick={ btnNextClick }>
+							<i class="right chevron icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+            </div>
+	</div>
+
+	<script>
+
+		var tag = this;
+		
+		tag.on("mount", function() {
+
+			tag.updateProduct(1);
+//                        tag.updateProduct1();
+                        tag.listAgentPOs();
+                        tag.listState();
+                        
+                        document.getElementById("sDater").style.display = "none";
+                        document.getElementById("nDater").style.display = "none";
+                        document.getElementById("areaAgent").style.display = "none";
+                        document.getElementById("kecamatan").style.display = "none";
+                        document.getElementById("validater").style.display = "none";
+                        document.getElementById("validaterAgent").style.display = "none";
+                        
+                        $('#rangestart').calendar({
+			  type: 'date',
+			  endCalendar: $('#rangeend')
+			});
+			$('#rangeend').calendar({
+			  type: 'date',
+			  startCalendar: $('#rangestart')
+			});
+		});
+                
+                orderBy() {
+
+			if(tag.refs.edtOrderBy.value == "TanggalUpload"){
+				document.getElementById("sDater").style.display = "block";
+				document.getElementById("nDater").style.display = "block";
+                                document.getElementById("areaAgent").style.display = "none";
+                                document.getElementById("kecamatan").style.display = "none";
+				document.getElementById("filterr").style.display = "none";
+				document.getElementById("validater").style.display = "block";
+                                document.getElementById("validaterAgent").style.display = "none";
+			}
+			else if (tag.refs.edtOrderBy.value == "Area") {
+                                document.getElementById("areaAgent").style.display = "block";
+                                document.getElementById("kecamatan").style.display = "block";
+                                document.getElementById("sDater").style.display = "none";
+                                document.getElementById("nDater").style.display = "none";
+                                document.getElementById("filterr").style.display = "none";
+                                document.getElementById("validater").style.display = "none";
+                                document.getElementById("validaterAgent").style.display = "block";
+                        } else {
+				document.getElementById("sDater").style.display = "none";
+				document.getElementById("nDater").style.display = "none";
+                                document.getElementById("areaAgent").style.display = "none";
+                                document.getElementById("kecamatan").style.display = "none";
+				document.getElementById("filterr").style.display = "block";
+				document.getElementById("validater").style.display = "none";
+                                document.getElementById("validaterAgent").style.display = "none";
+
+			}
+                    }
+                    
+                btnSearchClickAgent(){
+                    
+                    financeService.searchAgent(tag.refs.ddbKecamatan.value,
+				function(ret, errorCode, errorMsg) {
+				
+                                if(errorMsg == null) {
+                                    
+                                    if(ret.length > 0) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listAgent = ret;
+                                        tag.update();	
+                                    } else {
+                                        
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+						
+				});
+                }
+
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+                    
+                    tag.currentPage = page;
+                    var sDate;
+			var eDate;
+			var sDateStr = "";
+			var eDateStr = "";
+                        
+                        
+                        if(tag.refs.edtOrderBy.value == "TanggalUpload"){
+                            
+                                if($(tag.refs.startDate).calendar("get date") != null) {
+                                                sDate = dateToStr($(tag.refs.startDate).calendar("get date"));
+                                                sDate = strToDateTime(sDate + " " + "00" + ":" +  "00" + ":" + "00");
+                                                sDateStr = dateTimeToStr(sDate);
+                                }
+
+                                if($(tag.refs.endDate).calendar("get date") != null) {
+                                        eDate = dateToStr($(tag.refs.endDate).calendar("get date"));
+                                        eDate = strToDateTime(eDate + " " + "23" + ":" + "59" + ":" + "59");
+                                        eDateStr = dateTimeToStr(eDate);
+                                }
+                                
+                            }   else {
+                                sDateStr = "";
+                                eDateStr = "";
+                            }
+                        
+                            financeService.search(tag.refs.edtOrderBy.value,
+                                            tag.refs.edtFilter.value,
+                                            sDateStr,
+                                            eDateStr,
+                                            tag.currentPage,
+				function(ret, errorCode, errorMsg) {
+				
+                                if(errorMsg == null) {
+                                    
+                                    if(ret.length > 0) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();	
+                                    } else {
+                                        
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+						
+				});
+			
+                }
+                
+                listAgentPOs() {
+
+			addressService.listAgent(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listAgent = ret;
+					tag.update();
+				});
+		}
+                
+                listState() {
+                    financeService.listMapping(
+                        function(ret, errorCode, errorMsg) {
+
+					tag.listStateRet = ret;
+					tag.update();
+                                        
+                                        setTimeout(
+						function() {
+
+							tag.ddbStateSelect();
+						}, 100);
+				});
+                }
+                
+                ddbStateSelect() {
+                    financeService.listByCode(tag.refs.ddbState.value,
+                            function(ret, errorCode, errorMsg) {
+
+					tag.listCityRet = ret;
+					tag.update();
+                                        
+				});
+                }
+                
+//                ddbCitySelect() {
+//                    financeService.district(tag.refs.ddbCity.value,
+//                        function(ret, errorCode, errorMsg) {
+//
+//					tag.listDistrictRet = ret;
+//					tag.update();
+//                                        
+//                                        setTimeout(
+//						function() {
+//
+//							tag.ddbKecSelect();
+//						}, 100);
+//				});
+//                }
+                
+//                ddbKecSelect() {
+//                    financeService.kelurahan(tag.refs.ddbKec.value,
+//                        function(ret, errorCode, errorMsg) {
+//
+//					tag.listKelurahanRet = ret;
+//					tag.update();
+//                                        
+//                                        setTimeout(
+//						function() {
+//
+//							tag.ddbKecSelect();
+//						}, 100);
+//				});
+//                }
+
+		updateProduct1() {
+
+			financeService.listall(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct = ret;
+					tag.update();
+				});
+		}
+
+		btnAssingn() {
+
+				var checkBoxes = document.getElementsByName("tabCheckBox");
+				var lines = [];
+
+				for (i = 0; i< checkBoxes.length; i++){
+                                        
+                                    var a = checkBoxes[i].value
+                                        
+					if (checkBoxes[i].checked){
+						lines.push( 
+							checkBoxes[i].value	
+						);
+					}
+                                    }
+                                    
+                                    financeService.addAssignt({
+                                            listIdKonsumen : lines,
+                                            idAgentPos : tag.refs.edtFrmAsigen.value
+                                        },
+                                        function(ret, errorCode, errorMsg) {
+                                          if (errorCode == null) {
+
+                                               app.alert("Berhasil");
+                                               tag.updateProduct(1);
+                                        }
+                                        else
+                                                app.alert(errorMsg);
+                                        });
+                                
+                                
+                }
+		
+		btnExport() {
+
+		var wb = new Workbook();
+		var ws = wb.addSheet("Collector Agent");
+
+		var lines = [];
+		lines.push(['ID Collector']);
+
+		lines.push([
+				"&A1&",
+			]);
+			
+
+			ws.addCell(lines, 0, 0);
+			wb.save("Collector.xlsx");
+		}
+		
+
+			
+	</script>
+</assign>

@@ -1,0 +1,350 @@
+<user>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">user</span>
+				<br>
+				<span style="font-size: 16px; color: #999999">user List</span>
+			</div>			
+		</div>
+		<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+			<div class="ui card" style="width: 100%; height: calc(95% - 70px)">
+				<div class="content" style="margin: 20px;height: 100%">
+					<div class="ui form">
+						<table width="100%">
+							<tr>
+								<td width="2px">&nbsp;</td>
+								<td width="1px">
+									<div class="field">
+			      						<label>Filter :</label>
+			      						<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+	                        				document.getElementById('btnsearch').click()">
+											<button id="btnsearch"class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+			  						</div>
+
+								</td>
+								<td width="*" align="right">
+									<button class="ui button float right blue" style="margin-top: 10px" onclick={ btnAddClick }>Add</button>	
+								</td>	
+							</tr>
+
+						</table>	
+					</div>
+					<div style="padding: 5px; height: calc(100% - 100px)">
+						<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+							<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+					  			<thead>
+					    			<tr>
+					    				<th width="150px" style="position: -webkit-sticky;position: sticky;top: 0;">userId</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">Name</th>
+					      				<th width="150px" style="position: -webkit-sticky;position: sticky;top: 0;">roleId</th>
+					      				<th width="200px" style="position: -webkit-sticky;position: sticky;top: 0;">Action</th>
+					    			</tr>
+					  			</thead>
+								<tbody>
+									<tr each={ item in listUser}>
+										<td>{ item.userId }</td>
+										<td>{ item.name }</td>
+										<td>{ item.roleId }</td>
+										<td>
+											<button class="ui compact button" onclick={ btnEditClick }>Edit</button>
+											<button class="ui compact button" onclick={ btnDeleteClick }>Delete</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+					
+						<div style="position: absolute; bottom: 10px">
+							<div class="ui buttons">
+								<button class="ui icon button" onclick={ btnPrevClick }>
+									<i class="left chevron icon"></i>
+								</button>
+								<button each={ item in listPageNo } class="ui button">{ item }</button>
+								<button class="ui right icon button" onclick={ btnNextClick }>
+									<i class="right chevron icon"></i>
+								</button>
+							</div>
+						</div>
+					</div>	
+				</div>			
+			</div>		
+		</div>
+	</div>
+
+	<div ref="mdluser" class="ui modal longer">
+		
+		<div class="header">{ modalHeader }</div>
+		<div class="scrolling image content">
+			
+			<form class="ui large form" style="width: 100%">
+
+				<div class="fields">
+					<div class="six wide field" ref="edtFrmIdFrame">
+					    <label>user id</label>
+					    <input ref="edtFrmId" type="text">
+				  	</div>
+					<div class="six wide field" ref="edtFrmNameFrame">
+					    <label>user Name</label>
+					    <input ref="edtFrmName" type="text">
+				  	</div>
+				  	<div class="six wide field" ref="edtFrmPasswordFrame">
+					    <label>Password</label>
+					    <input ref="edtFrmPassword" type="text">
+				  	</div>
+				  <div class="six wide field" ref="ddbFrmRoleFrame" >
+					    <label>Role</label>
+					    <select class="ui fluid dropdown" ref="ddbFrmRole">
+							<option each={ item in listRoleMdl } value={ item.roleId }>{ item.name }</option>
+						</select>
+				  	</div>	
+				</div>
+				
+			</form>	
+		</div>
+		<div class="actions">
+		    <div class="ui approve button green">Save</div>
+		    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+		</div>
+	</div>
+
+	<script>
+		var tag = this;
+
+		tag.listUser = [];
+		tag.listPageNo = [];
+
+		tag.on("mount", function() {
+
+			tag.updateData(1);
+		});
+
+		btnSearchClick() {
+
+			tag.updateData(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateData(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateData(tag.currentPage + 1);
+		}
+
+
+		updateData(page) {
+
+			tag.currentPage = page;
+
+			userService.searchUser(tag.refs.edtFilter.value,
+									page,
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.maxPage = 10;
+						tag.listUser = ret;
+						tag.update();	
+					}
+					else
+						app.alert(errorMsg);
+				});
+		}
+		
+		btnAddClick() {
+
+			tag.modalHeader = "Add user";
+			
+			tag.refs.edtFrmId.value = "";
+			tag.refs.edtFrmName.value = "";
+			tag.refs.edtFrmPassword.value = "";
+			
+			tag.refs.edtFrmIdFrame.classList.remove("error");	
+			tag.refs.edtFrmNameFrame.classList.remove("error");			
+			tag.refs.edtFrmPasswordFrame.classList.remove("error");
+			
+			
+			tag.update();
+
+			roleService.getAll(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listRoleMdl = ret;
+					tag.update();
+
+				});
+
+			$(tag.refs.mdluser)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmId.value == null || tag.refs.edtFrmId.value == "") {
+
+										tag.refs.edtFrmIdFrame.classList.add("error");
+										cont = false;
+										}
+										else
+											tag.refs.edtFrmIdFrame.classList.remove("error");
+
+
+										if (tag.refs.edtFrmName.value == null || tag.refs.edtFrmName.value == "") {
+
+										tag.refs.edtFrmNameFrame.classList.add("error");
+										cont = false;
+										}
+										else
+											tag.refs.edtFrmNameFrame.classList.remove("error");
+
+										if (tag.refs.edtFrmPassword.value == null || tag.refs.edtFrmPassword.value == "") {
+
+											tag.refs.edtFrmPasswordFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmPasswordFrame.classList.remove("error");
+										
+										if (cont) {
+
+											userService.addUser(
+																{
+																	userId: tag.refs.edtFrmId.value,
+																	name: tag.refs.edtFrmName.value,
+																	password: tag.refs.edtFrmPassword.value,
+																	roleId: tag.refs.ddbFrmRole.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														$(tag.refs.mdluser).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnEditClick(e) {
+			tag.modalHeader = "Add user";
+			
+			tag.refs.edtFrmId.value = e.item.item.userId;
+			tag.refs.edtFrmName.value = e.item.item.name;
+
+			var decodedString = e.item.item.password;
+			tag.refs.edtFrmPassword.value = decodedString.substring(6, 100);
+			
+			tag.refs.edtFrmIdFrame.classList.remove("error");	
+			tag.refs.edtFrmNameFrame.classList.remove("error");			
+			tag.refs.edtFrmPasswordFrame.classList.remove("error");
+			
+			
+			tag.update();
+
+			roleService.getAll(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listRoleMdl = ret;
+					tag.update();
+					setTimeout(
+						function() {
+
+							tag.refs.ddbFrmRole.value = e.item.item.roleId;
+						}, 100);
+				});
+
+			$(tag.refs.mdluser)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmId.value == null || tag.refs.edtFrmId.value == "") {
+
+										tag.refs.edtFrmIdFrame.classList.add("error");
+										cont = false;
+										}
+										else
+											tag.refs.edtFrmIdFrame.classList.remove("error");
+
+
+										if (tag.refs.edtFrmName.value == null || tag.refs.edtFrmName.value == "") {
+
+										tag.refs.edtFrmNameFrame.classList.add("error");
+										cont = false;
+										}
+										else
+											tag.refs.edtFrmNameFrame.classList.remove("error");
+
+										if (tag.refs.edtFrmPassword.value == null || tag.refs.edtFrmPassword.value == "") {
+
+											tag.refs.edtFrmPasswordFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmPasswordFrame.classList.remove("error");
+										
+										if (cont) {
+
+											userService.updateUser(
+																{
+																	userId: tag.refs.edtFrmId.value,
+																	name: tag.refs.edtFrmName.value,
+																	password: tag.refs.edtFrmPassword.value,
+																	roleId: tag.refs.ddbFrmRole.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														$(tag.refs.mdluser).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnDeleteClick(e) {
+
+			app.confirm("Are you sure to delete user " + e.item.item.name + " ?",
+				function() {
+
+					userService.deleteUser(e.item.item.userId,
+						function(ret, errorCode, errorMsg) {
+
+							if (errorCode == null)
+								tag.updateData(1);
+							else
+								app.alert(errorMsg);
+						}); 
+				});
+		}
+	</script>
+</user>

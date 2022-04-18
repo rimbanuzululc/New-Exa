@@ -1,0 +1,296 @@
+<somasi>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Somasi</span>
+				<br>
+				<span style="font-size: 16px; color: #008080">List Data Somasi</span>
+			</div>
+		</div>
+		<div class="ui card" style="width: 100%; height: calc(100% - 70px)">
+			<div class="content" style="margin: 20px;">
+
+				<div class="ui form" style="padding: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="1px">&nbsp;</td>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">
+									<div class="three wide field">
+                                                                            <label>&nbsp;</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy" onchange={ orderBy }>
+                                                                                        <option value="NamaDebitur" disabled selected>Search By</option>
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="NoAgreement">No Agreement</option>
+										    	<option value="TahunKendaraan">Tahun Kendaraan</option>
+										    	<option value="NomorPolisi">Nomor Polisi</option>
+                                                                                        <option value="StatusSomasi">Status Somasi</option>
+                                                                                        <option value="TanggalUpload" id="date">Tanggal Upload</option>
+			    							</select>
+								  	</div>
+                                                                      <div class="three wide field" id="sDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangestart" ref="startDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="Start">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="three wide field" id="nDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangeend" ref="endDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="End">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+																																			<div class="three wide field" id="validater">
+                                                                          <label>&nbsp;</label>
+																																					<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+                                                                      </div>
+									<div class="three wide field" id="filterr">
+                                                                            <label>&nbsp;</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>
+							  	</div>
+							</td>
+							<td width="*" align="right">
+
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div style="padding: 5px; height: calc(100% - 165px)">
+					<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+						<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+				  			<thead>
+				    			<tr>
+				    				<th style="250px: -webkit-sticky;position: sticky;top: 0;"><center>Action</center></th>
+				    				<th style="position: -webkit-sticky;position: sticky;top: 0;">No.</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">No Aggrement</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Name Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">No Telp/HP Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Perjanjian</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tahun Kendaraan</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nomor Polisi Kendaraan</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Angsuran Per Bulan</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Sisa Outstanding Debitur</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Mulai Menunggak</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP1</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP2</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Kronologis Singkat</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Upload</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Agent POS</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 1</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 2</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Somasi</th>
+                                                                <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Konfirm by Phone</th>
+				      			</tr>
+				  			</thead>
+							<tbody>
+								<tr each={ item in listProduct}>
+									<td>
+										<table>
+											<tr>
+												<td>
+													<div class="ui approve button green" onclick={ btnDownload1Click }> SO1</div>
+												</td>
+												<td>
+													<div class="ui approve button green" onclick={ btnDownload2Click }> SO2</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td>{ item.konsumenId }</td>
+                                                                        <td>{ item.noAggrement }</td>
+                                                                        <td>{ item.namaDebitur }</td>
+                                                                        <td>{ item.noTelp }</td>
+                                                                        <td>{ item.tglPerjanjian }</td>
+                                                                        <td>{ item.tahunKendaraan }</td>
+                                                                        <td>{ item.nomorPolisi }</td>
+                                                                        <td>{ item.installment }</td>
+                                                                        <td>{ item.sisaOutstanding }</td>
+                                                                        <td>{ item.tglMulaiMenunggak }</td>
+                                                                        <td>{ item.tglSp1 }</td>
+                                                                        <td>{ item.tglSp2 }</td>
+                                                                        <td>{ item.kronologi }</td>
+                                                                        <td>{ item.upload_date }</td>
+                                                                        <td>{ item.agentName }</td>
+                                                                        <td>{ item.tglSp1 }</td>
+                                                                        <td>{ item.tglSp2 }</td>
+                                                                        <td>{ item.statusSomasi }</td>
+                                                                        <td>{ item.statusByPhone }</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div style="position: absolute; bottom: 10px">
+					<div class="ui buttons">
+						<button class="ui icon button" onclick={ btnPrevClick }>
+							<i class="left chevron icon"></i>
+						</button>
+						<button each={ item in listPageNo } class="ui button">{ item }</button>
+						<button class="ui right icon button" onclick={ btnNextClick }>
+							<i class="right chevron icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+		var tag = this;
+
+		tag.on("mount", function() {
+							document.getElementById("sDater").style.display = "none";
+							document.getElementById("nDater").style.display = "none";
+							document.getElementById("validater").style.display = "none";
+			tag.updateProduct(1);
+//                        tag.updateProduct1();
+
+                        $('#rangestart').calendar({
+			  type: 'date',
+			  endCalendar: $('#rangeend')
+			});
+			$('#rangeend').calendar({
+			  type: 'date',
+			  startCalendar: $('#rangestart')
+			});
+		});
+
+		orderBy() {
+
+			if(tag.refs.edtOrderBy.value == "TanggalUpload"){
+				document.getElementById("sDater").style.display = "block";
+				document.getElementById("nDater").style.display = "block";
+				document.getElementById("filterr").style.display = "none";
+				document.getElementById("validater").style.display = "block";
+
+validater
+			}
+			else {
+				document.getElementById("sDater").style.display = "none";
+				document.getElementById("nDater").style.display = "none";
+				document.getElementById("filterr").style.display = "block";
+
+				document.getElementById("validater").style.display = "none";
+
+			}
+		}
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+
+                    tag.currentPage = page
+                    var sDate;
+			var eDate;
+			var sDateStr = "";
+			var eDateStr = "";
+
+                        if($(tag.refs.startDate).calendar("get date") != null) {
+                                        sDate = dateToStr($(tag.refs.startDate).calendar("get date"));
+                                        sDate = strToDateTime(sDate + " " + "00" + ":" +  "00" + ":" + "00");
+                                        sDateStr = dateTimeToStr(sDate);
+                        }
+
+                        if($(tag.refs.endDate).calendar("get date") != null) {
+                                eDate = dateToStr($(tag.refs.endDate).calendar("get date"));
+                                eDate = strToDateTime(eDate + " " + "23" + ":" + "59" + ":" + "59");
+                                eDateStr = dateTimeToStr(eDate);
+                        }
+
+                       financeService.search(tag.refs.edtOrderBy.value,
+                                            tag.refs.edtFilter.value,
+                                            sDateStr,
+                                            eDateStr,
+                                            tag.currentPage,
+				function(ret, errorCode, errorMsg) {
+
+                                if(errorMsg == null) {
+
+                                    if(ret.length > 0) {
+
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();
+                                    } else {
+
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+
+				});
+		}
+
+		updateProduct1() {
+
+			financeService.listall(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct = ret;
+					tag.update();
+				});
+		}
+
+
+		btnExport() {
+
+		var wb = new Workbook();
+		var ws = wb.addSheet("Collector Agent");
+
+		var lines = [];
+		lines.push(['ID Collector']);
+
+		lines.push([
+				"&A1&",
+			]);
+
+
+			ws.addCell(lines, 0, 0);
+			wb.save("Collector.xlsx");
+		}
+
+		btnDownload1Click(e) {
+
+			window.open(financeService.downloadSomasi1(e.item.item.noAggrement));
+		}
+
+		btnDownload2Click(e) {
+
+			window.open(financeService.downloadSomasi2(e.item.item.noAggrement));
+		}
+
+
+
+	</script>
+</somasi>

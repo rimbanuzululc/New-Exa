@@ -1,0 +1,388 @@
+<role>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">role</span>
+				<br>
+				<span style="font-size: 16px; color: #999999">role List</span>
+			</div>			
+		</div>
+		<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+			<div class="ui card" style="width: 100%; height: calc(95% - 70px)">
+				<div class="content" style="margin: 20px;height: 100%">
+					<div class="ui form">
+						<table width="100%">
+							<tr>
+								<td width="2px">&nbsp;</td>
+								<td width="1px">
+									<div class="field">
+			      						<label>Filter :</label>
+			      						<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+	                        				document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+			  						</div>
+
+								</td>
+								<td width="*" align="right">
+									<button class="ui button float right blue" style="margin-top: 10px" onclick={ btnAddClick }>Add</button>	
+								</td>	
+							</tr>
+						</table>	
+					</div>
+					<div style="padding: 5px; height: calc(100% - 100px)">
+						<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+							<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+					  			<thead>
+					    			<tr>
+					    				<th width="150px" style="position: -webkit-sticky;position: sticky;top: 0;">Role Id</th>
+					      				<th style="position: -webkit-sticky;position: sticky;top: 0;">Name</th>
+					      				<th width="200px" style="position: -webkit-sticky;position: sticky;top: 0;">Action</th>
+					    			</tr>
+					  			</thead>
+								<tbody>
+									<tr each={ item in listRole}>
+										<td>{ item.roleId }</td>
+										<td>{ item.name }</td>
+										<td>
+											<button class="ui compact button" onclick={ btnEditClick }>Edit</button>
+											<button class="ui compact button" onclick={ btnDetilClick }>Detil</button>
+											<button class="ui compact button" onclick={ btnDeleteClick }>Delete</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+					
+						<div style="position: absolute; bottom: 10px">
+							<div class="ui buttons">
+								<button class="ui icon button" onclick={ btnPrevClick }>
+									<i class="left chevron icon"></i>
+								</button>
+								<button each={ item in listPageNo } class="ui button">{ item }</button>
+								<button class="ui right icon button" onclick={ btnNextClick }>
+									<i class="right chevron icon"></i>
+								</button>
+							</div>
+						</div>
+					</div>	
+				</div>			
+			</div>		
+		</div>
+	</div>
+	<div ref="mdlrole" class="ui modal longer">
+		
+		<div class="header">{ modalHeader }</div>
+		<div class="scrolling image content">
+			
+			<form class="ui large form" style="width: 100%">
+
+				<div class="fields">
+					<div class="six wide field" ref="edtFrmNameFrame">
+					    <label>Name</label>
+					    <input ref="edtFrmName" type="text">
+				  	</div>
+				</div>
+			</form>	
+		</div>
+		<div class="actions">
+		    <div class="ui approve button green">Save</div>
+		    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+		</div>
+	</div>
+
+	<div ref="mdlroleMenu" class="ui modal longer">
+			
+			<div class="header">{ modalHeader }</div>
+			<div class="scrolling image content">
+				
+				<form class="ui large form" style="width: 100%">
+
+					<div class="fields">
+
+						<div style="padding: 5px; height: calc(100% - 180px)">
+							<div style="height: 100%; overflow: auto; border-top: 1px solid rgba(34, 36, 38, 0.15);margin-top: 10px; margin-left: 5px;">
+								<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+						  			<thead>
+						    			<tr>
+						    				<th width="150px"  style="position: -webkit-sticky;position: sticky;top: 0;">menuId</th>
+						      				<th width="150px" style="position: -webkit-sticky;position: sticky;top: 0;">title</th>
+						      				<th style="position: -webkit-sticky;position: sticky;top: 0;">Selected</th>
+						    			</tr>
+						  			</thead>
+									<tbody>
+										<tr each={ item in ListMenu }>
+										<td>{ item.menuId }</td>
+										<td>{ item.title }</td>
+										<td><input type="checkbox" 
+											name ="tabCheckBox"
+											checked={ getAttrChecked(item) } 
+											value= { item.menuId } ></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>				
+						</div>
+						
+					</div>
+				</form>	
+			</div>
+			<div class="actions">
+			    <div class="ui approve button green">Save</div>
+			    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+			</div>
+		</div>
+
+
+
+
+	<script>
+		var tag = this;
+
+		tag.listRole = [];
+		tag.listPageNo = [];
+
+		tag.on("mount", function() {
+
+			tag.updateData(1);
+
+			userService.getAllMenu(
+				function(ret, errorCode, errorMsg) {
+
+					tag.ListMenu = ret;
+					tag.update();
+
+				});
+		});
+
+		btnSearchClick() {
+
+			tag.updateData(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateData(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateData(tag.currentPage + 1);
+		}
+
+
+		updateData(page) {
+
+			tag.currentPage = page;
+
+			userService.searchRole(tag.refs.edtFilter.value,
+									page,
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+						tag.maxPage = 10;
+						tag.listRole = ret;
+						tag.update();	
+					}
+					else
+						app.alert(errorMsg);
+				});
+		}
+
+
+		btnAddClick() {
+
+			tag.modalHeader = "Add role";
+			
+			tag.refs.edtFrmName.value = "";
+	
+			tag.refs.edtFrmNameFrame.classList.remove("error");
+			
+			tag.update();
+
+			$(tag.refs.mdlrole)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmName.value == null || tag.refs.edtFrmName.value == "") {
+
+											tag.refs.edtFrmNameFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmNameFrame.classList.remove("error");
+										
+										if (cont) {
+
+											userService.addRole(
+																{
+																	name: tag.refs.edtFrmName.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														$(tag.refs.mdlrole).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnEditClick(e) {
+
+			tag.modalHeader = "Edit role";
+			
+			tag.refs.edtFrmName.value = e.item.item.name;                       
+	
+			tag.refs.edtFrmNameFrame.classList.remove("error");
+			
+			tag.update();
+
+			$(tag.refs.mdlrole)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+
+										if (tag.refs.edtFrmName.value == null || tag.refs.edtFrmName.value == "") {
+
+											tag.refs.edtFrmNameFrame.classList.add("error");
+											cont = false;
+										}
+										else
+											tag.refs.edtFrmNameFrame.classList.remove("error");
+										
+										if (cont) {
+
+											userService.updateRole(
+																{
+                                                                    roleId: e.item.item.roleId,
+																	name: tag.refs.edtFrmName.value
+																},
+												function(ret, errorCode, errorMsg) {
+
+													if (errorCode == null) {
+
+														tag.updateData(1);
+														$(tag.refs.mdlrole).modal('hide');
+													}
+													else
+														app.alert(errorMsg);
+												});
+										}
+										
+										return false;
+									}
+						})
+				.modal('show');
+		}
+
+		btnDeleteClick(e) {
+
+			app.confirm("Are you sure to delete role " + e.item.item.name + " ?",
+				function() {
+
+					regionService.deleterole(e.item.item.roleId,
+						function(ret, errorCode, errorMsg) {
+
+							if (errorCode == null)
+								tag.updateData(1);
+							else
+								app.alert(errorMsg);
+						}); 
+				});
+		}
+
+		getAttrChecked(item) {
+
+			var result = false;
+
+			if (tag.listMenu != null) {
+
+						for (var i in tag.listMenu) {
+
+								if (tag.listMenu[i].menuId == item.menuId) {
+									result = true;
+								}
+							}
+					}
+			return result;
+
+		}
+
+		btnDetilClick(e) {
+
+			tag.modalHeader = "Menu";
+
+			roleService.getListById(e.item.item.roleId,
+				function(ret, errorCode, errorMsg) {
+
+						tag.listMenu = ret;
+						tag.update();
+				}); 	
+
+
+			$(tag.refs.mdlroleMenu)
+				.modal({ 
+						allowMultiple: true,
+						onApprove : function() {
+
+										var cont = true;
+										
+										var checkBoxes = document.getElementsByName("tabCheckBox");
+										var lines = [];
+										
+
+										var cont = false;
+
+											for (i = 0; i< checkBoxes.length; i++){
+
+												if (checkBoxes[i].checked){
+														lines.push({ 
+																roleId : e.item.item.roleId,
+																menuId : checkBoxes[i].value
+														});
+													}
+												}
+
+										roleService.addMenu(
+													{ 
+														listRole: lines,
+													},
+										function(ret, errorCode, errorMsg) {
+
+											});
+												
+										$(tag.refs.mdlroleMenu).modal('hide');
+										
+										return false;
+									},
+							onDeny    : function(){
+				              	$(tag.refs.mdlroleMenu).modal('hide');
+				              	tag.updateData(1);
+				              	tag.listProductAttr = null;
+				            }
+						})
+				.modal('show');
+		}
+	</script>
+</role>

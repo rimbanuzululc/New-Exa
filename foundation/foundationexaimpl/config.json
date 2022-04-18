@@ -1,0 +1,9 @@
+{
+    "mainVerticle" : "com.bsi.exa.foundation.FoundationVerticle",
+        "db": {
+        "url"           : "jdbc:postgresql://localhost:5432/new_exa",
+        "driver_class"  : "org.postgresql.Driver",
+        "user"          : "postgres",
+        "password"      : "admin123"
+    }
+}

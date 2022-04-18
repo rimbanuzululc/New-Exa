@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    html, body{
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0;
+  overflow: hidden;
+}
+  </style>
+  <script src="./lib/tinymce/tinymce.min.js"></script>
+  <script>
+    tinymce.PluginManager.add('autoheight', function(editor) {
+
+  var editor_container;
+  var bars_height = 0;
+
+  function resizeEditor(e) {
+    if (typeof(editor_container) === 'undefined') return;
+
+    try {
+      var element_height = parseInt(window.getComputedStyle(editor_container).height);
+      /*calculate bar height only once*/
+      if (bars_height === 0) {
+        var toolbars = editor_container.querySelectorAll('.mce-toolbar, .mce-statusbar, .mce-menubar');
+        /*IE11 FIX*/
+        var toolbarsLength = toolbars.length;
+        for (var i = 0; i < toolbarsLength; i++) {
+          var toolbar = toolbars[i];
+          /*skip sidebar*/
+          if (!toolbar.classList.contains('mce-sidebar-toolbar')) {
+            var bar_height = parseInt(window.getComputedStyle(toolbar).height);
+            bars_height += bar_height;
+          }
+        }
+      }
+      /*the extra 8 is for margin added between the toolbars*/
+      new_height = element_height - bars_height - 8;
+      editor.theme.resizeTo('100%', new_height);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  editor.on('ResizeWindow', resizeEditor);
+  editor.on("init", function() {
+    try {
+      editor_container = editor.getContainer().parentNode;
+    } catch (e) {}
+    setTimeout(function() {
+      resizeEditor();
+    }, 10);
+  });
+});
+
+tinymce.init({
+  selector: 'textarea',
+  height: 200,
+  theme: 'modern',
+  removed_menuitems: 'newdocument',
+  plugins: [
+    'advlist autolink lists link image charmap preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons paste textcolor colorpicker textpattern imagetools codesample toc autoheight'
+  ],
+  toolbar1: 'undo redo | insert | styleselect | fontselect fontsizeselect forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  image_advtab: true,
+  resize: false,
+  style_formats: [{
+    title: "a",
+    items: [{
+      title: 'Badge',
+      inline: 'span',
+      styles: {
+        display: 'inline-block',
+        border: '1px solid #2276d2',
+        'border-radius': '5px',
+        padding: '2px 5px',
+        margin: '0 2px',
+        color: '#2276d2'
+      }
+    }]
+  }, ],
+  style_formats_merge: true,
+});
+
+
+  function getContent() {
+
+    return tinymce.get('editor1').getContent();
+  }
+
+  function setContent(data) {
+
+    return tinymce.get('editor1').setContent(data);
+  }
+
+</script>
+</head>
+<body>
+  <textarea id="editor1"></textarea>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "dataInt": 112233,
+    "dataString": "aaaBBBccc",
+    "dataBool": true,
+    "port" : 8080
+}

@@ -1,0 +1,667 @@
+<konsumen>
+    <div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Konsumen</span>
+				<br>
+				<span style="font-size: 16px; color: #999999">Daftar Konsumen</span>
+			</div>			
+		</div>
+		<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+			<div class="ui card" style="width: 100%; height: calc(95% - 70px)">
+				<div class="content" style="margin: 10px;height: 100%">
+				<div class="ui form">
+						<table width="100%">
+						<tr>
+							<td width="1px">
+								&nbsp;
+							</td>
+                                                        
+							<td width="30%">
+							<input ref="fileexcel" type="file" name="file" id="excelfile"  multiple />
+							</td>
+							<td width="*">
+								<div class="ui button float right red"  style="margin-left: 1px" onclick={ ExportToTableExcel }>Upload</div> 
+							</td>	
+						</tr>
+					</table>	
+                                    </div>
+					<div class="ui form">
+						<table width="100%">
+                                                    
+							<td width="1px">&nbsp;</td>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">									
+									<div class="three wide field">
+                                                                            <label>&nbsp;</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy" onchange={ orderBy }>
+                                                                                        <option value="NamaDebitur" disabled selected>Search By</option>
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="NoAgreement">No Agreement</option>
+										    	<option value="TahunKendaraan">Tahun Kendaraan</option>
+										    	<option value="NomorPolisi">Nomor Polisi</option>
+                                                                                        <option value="StatusSomasi">Status Somasi</option>
+                                                                                        <option value="TanggalUpload" id="date">Tanggal Upload</option>
+			    							</select>
+								  	</div>
+                                                                        <div class="three wide field" id="sDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangestart" ref="startDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="Start">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="three wide field" id="nDater">
+                                                                          <label>&nbsp;</label>
+                                                                          <div class="ui calendar" id="rangeend" ref="endDate">
+                                                                            <div class="ui input left icon">
+                                                                              <i class="calendar icon"></i>
+                                                                              <input type="text" placeholder="End">
+                                                                            </div>
+                                                                          </div>
+                                                                      </div>
+                                                        <div class="three wide field" id="validater">
+                                                                <label>&nbsp;</label>
+                                                                        <button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+                                                                      </div>
+									<div class="three wide field" id="filterr">
+                                                                            <label>&nbsp;</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>
+							  	</div>	
+							</td>
+							<td width="*" align="right">
+								
+							</td>	
+						</table>	
+					</div>
+                                    
+					<div style="padding: 5px; height: calc(100% - 100px)">
+						<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+							<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+                                                                    <thead>
+                                                                    <tr>
+                                                                            <!--<th style="position: -webkit-sticky;position: sticky;top: 0;">No.</th>-->
+                                                                            <th style="position: -webkit-sticky;position: sticky;top: 0;">No Aggrement</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Name Debitur</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nama Agent POS</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">No Telp/HP Debitur</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Angsuran Per Bulan</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Sisa Outstanding Debitur</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 1</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman Somasi 2</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Somasi</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Konfirm KA Pos by Phone</th>
+                                                                            <th style="300px: -webkit-sticky;position: sticky;top: 0;">Kronologis Singkat</th>
+<!--                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Perjanjian</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tahun Kendaraan</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Nomor Polisi Kendaraan</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Mulai Menunggak</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP1</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal SP2</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Upload</th>-->
+                                                                            
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                            <tr each={ item in listProduct}>
+                                                                                    <!--<td>{ item.konsumenId }</td>-->
+                                                                                    <td>
+                                                                                        <div>
+                                                                                            <span onclick={ btnDetailClick } style="cursor: pointer; color: blue"><u>{ item.noAggrement }</u></span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td>{ item.namaDebitur }</td>
+                                                                                    <td>{ item.agentName }</td>
+                                                                                    <td>{ item.noTelp }</td>
+                                                                                    <td>{ item.installment }</td>
+                                                                                    <td>{ item.sisaOutstanding }</td>
+                                                                                    <td>{ item.sendSomasi1Date }</td>
+                                                                                    <td>{ item.sendSomasi2Date }</td>
+                                                                                    <td>{ item.statusSomasi }</td>
+                                                                                    <td>{ item.statusByPhone }</td>
+                                                                                    <td>{ item.kronologi }</td>
+<!--                                                                                    <td>{ item.tglPerjanjian }</td>
+                                                                                    <td>{ item.tahunKendaraan }</td>
+                                                                                    <td>{ item.nomorPolisi }</td>
+                                                                                    <td>{ item.tglMulaiMenunggak }</td>
+                                                                                    <td>{ item.tglSp1 }</td>
+                                                                                    <td>{ item.tglSp2 }</td>
+                                                                                    <td>{ item.upload_date }</td>-->
+                                                                            </tr>
+                                                                    </tbody>
+							</table>
+						</div>	
+					
+						
+					</div>	
+                                    <div style="padding: 5px;" style="position: absolute; bottom: 10px">
+                                            <div class="ui buttons">
+                                                    <button class="ui icon button" onclick={ btnPrevClick }>
+                                                            <i class="left chevron icon"></i>
+                                                    </button>
+                                                    <button each={ item in listPageNo } class="ui button">{ item }</button>
+                                                    <button class="ui right icon button" onclick={ btnNextClick }>
+                                                            <i class="right chevron icon"></i>
+                                                    </button>
+                                            </div>
+                                    </div>
+				</div>			
+			</div>		
+		</div>
+	</div>
+
+	<div ref="mdluser" class="ui modal longer">
+		
+		<div class="header" align="center">{ modalHeader }</div>
+		<div class="scrolling image content">
+			
+			<form class="ui large form" style="width: 100%">
+
+				<div class="fields">
+					<div class="six wide field" ref="edtFrmIdFrame">
+					    <label>user id</label>
+					    <input ref="edtFrmId" type="text">
+				  	</div>
+					<div class="six wide field" ref="edtFrmNameFrame">
+					    <label>user Name</label>
+					    <input ref="edtFrmName" type="text">
+				  	</div>
+				  	<div class="six wide field" ref="edtFrmPasswordFrame">
+					    <label>Password</label>
+					    <input ref="edtFrmPassword" type="text">
+				  	</div>
+				  <div class="six wide field" ref="ddbFrmRoleFrame" >
+					    <label>Role</label>
+					    <select class="ui fluid dropdown" ref="ddbFrmRole">
+							<option each={ item in listRoleMdl } value={ item.roleId }>{ item.name }</option>
+						</select>
+				  	</div>	
+				</div>
+				
+			</form>	
+		</div>
+		<div class="actions">
+		    <div class="ui approve button green">Save</div>
+		    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+		</div>
+	</div>
+    
+        <div ref="mdlProduct" class="ui modal longer">
+		
+		<div class="header">Detail Debitur</div>
+		<div class="scrolling image content">
+			
+			<form class="ui form" style="width: 100%">
+
+				<div class="fields">
+
+					<div class="sixteen wide field">
+                                            
+						<div class="fields">						
+							<div class="eight wide field" ref="edtFrmNameFrame">
+								<label>No Aggrement</label>
+								<input ref="edtFrmNoAggrement" type="text" maxlength="255" disabled="" style="color:Black;">
+							</div>
+							<div class="sixteen wide field" ref="edtFrmTaglineFrame">
+								<label>Nama Debitur</label>
+								<input ref="edtFrmNama" type="text" maxlength="255" disabled="">
+							</div>							
+						</div>
+						<div class="fields">
+							<div class="fifteen wide field" ref="edtFrmKodeFrame">
+								<label>Alamat Lengkap Debitur (Sesuai KTP)</label>
+								<input ref="edtFrmAlamatKtpt" type="text" maxlength="400" maxheight="200" disabled="">
+							</div>
+                                                        <div class="eight wide field" ref="edtFrmNameFrame">
+								<label>ZipCode KTP</label>
+								<input ref="edtFrmZipcode" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">						
+							<div class="eight wide field" ref="edtFrmNameFrame">
+								<label>Provinsi KTP</label>
+								<input ref="edtFrmProvinsiKtp" type="text" maxlength="255" disabled="">
+							</div>
+							<div class="eight wide field" ref="edtFrmTaglineFrame">
+								<label>Kota KTP</label>
+								<input ref="edtFrmKotaKtp" type="text" maxlength="255" disabled="">
+							</div>							
+						</div>
+                                                <div class="fields">						
+							<div class="eight wide field" ref="edtFrmNameFrame">
+								<label>Kecamatan KTP</label>
+								<input ref="edtFrmKecamatanKtp" type="text" maxlength="255" disabled="">
+							</div>
+							<div class="eight wide field" ref="edtFrmTaglineFrame">
+								<label>Kelurahan KTP</label>
+								<input ref="edtFrmKelurahanKtp" type="text" maxlength="255" disabled="">
+							</div>							
+						</div><div class="fields">
+							<div class="fifteen wide field" ref="edtFrmKodeFrame">
+								<label>Alamat Tinggal Sekarang</label>
+								<input ref="edtFrmAlamatTgl" type="text" maxlength="400" maxheight="200" disabled="">
+							</div>
+                                                        <div class="eight wide field" ref="edtFrmNameFrame">
+								<label>ZipCode Tinggal</label>
+								<input ref="edtFrmZipcodeTgl" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">						
+							<div class="eight wide field" ref="edtFrmNameFrame">
+								<label>Provinsi Tinggal</label>
+								<input ref="edtFrmProvinsiTgl" type="text" maxlength="255" disabled="">
+							</div>
+							<div class="eight wide field" ref="edtFrmTaglineFrame">
+								<label>Kota Tinggal</label>
+								<input ref="edtFrmKotaTgl" type="text" maxlength="255" disabled="">
+							</div>							
+						</div>
+                                                <div class="fields">						
+							<div class="eight wide field" ref="edtFrmNameFrame">
+								<label>Kecamatan Tinggal</label>
+								<input ref="edtFrmKecamatanTgl" type="text" maxlength="255" disabled="">
+							</div>
+							<div class="eight wide field" ref="edtFrmTaglineFrame">
+								<label>Kelurahan Tinggal</label>
+								<input ref="edtFrmKelurahanTgl" type="text" maxlength="255" disabled="">
+							</div>							
+						</div>
+						<div class="fields">	
+							<div class="eight wide field" style="margin-right: 5px; padding-right: 0px" ref="edtFrmPhoneAreaFrame">
+								<label>Telp</label>
+								<input ref="edtFrmPhone" type="text" maxlength="4" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">	
+							<div class="twelve wide field" style="margin-right: 5px; padding-right: 0px" ref="edtFrmPhoneAreaFrame">
+								<label>Jenis Perjanjian</label>
+								<input ref="edtFrmJenis" type="text" maxlength="4" disabled="">
+							</div>
+                                                        <div class="eight wide field" style="margin-right: 5px; padding-right: 0px" ref="edtFrmPhoneAreaFrame">
+								<label>Tanggal Perjanjian</label>
+								<input ref="edtFrmTglPerjanjian" type="text" maxlength="4" disabled="">
+							</div>
+						</div>
+						<div class="fields">	
+							<div class="eight wide field" ref="edtFrmAdminEmailFrame">
+								<label>Merek & Jenis Kendaraan</label>
+								<input ref="edtFrmMerek" type="text" maxlength="255" disabled="" >
+							</div>
+						</div>
+                                                <div class="fields">
+                                                        <div class="five wide field" ref="edtFrmAdminEmailAltFrame">
+                                                                <label>Tahun Kendaraan</label>
+                                                                <input ref="edtFrmTahunKendaraan" type="text" maxlength="255" disabled="">
+                                                        </div>
+                                                        <div class="five wide field" ref="edtFrmAdminEmailAltFrame">
+                                                                <label>Nomor Polisi</label>
+                                                                <input ref="edtFrmNopol" type="text" maxlength="255" disabled="">
+                                                        </div>
+                                                        <div class="five wide field" ref="edtFrmAdminEmailAltFrame">
+                                                                <label>Kondisi Kendaraan</label>
+                                                                <input ref="edtFrmKondisi" type="text" maxlength="255" disabled="">
+                                                        </div>
+                                                </div>
+                                                <div class="fields">	
+							<div class="seven wide field" ref="edtFrmAdminEmailFrame">
+								<label>Nomor Rangka Kendaraan</label>
+								<input ref="edtFrmNoRangka" type="text" maxlength="255" disabled="" >
+							</div>
+							<div class="seven wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Nomor Mesin Kendaraan</label>
+								<input ref="edtFrmNoMesin" type="text" maxlength="255" disabled="">
+							</div>
+                                                        <div class="five wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Warna Kendaraan</label>
+								<input ref="edtFrmWarna" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">	
+							<div class="eight wide field" ref="edtFrmAdminEmailFrame">
+								<label>Nomor BPKB</label>
+								<input ref="edtFrmNoBpkb" type="text" maxlength="255" disabled="" >
+							</div>
+							<div class="eight wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Atas Nama BPKB</label>
+								<input ref="edtFrmAnBpkb" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">
+                                                        <div class="eight wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Alamat BPKB</label>
+								<input ref="edtFrmAlamatBpkb" type="text" maxlength="255" disabled="">
+							</div>
+                                                </div>
+                                                <div class="fields">	
+							<div class="eight wide field" ref="edtFrmAdminEmailFrame">
+								<label>Nomor STNK</label>
+								<input ref="edtFrmNoStnk" type="text" maxlength="255" disabled="" >
+							</div>
+							<div class="eight wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Daftar Konsumen</label>
+								<input ref="edtFrmFidusia" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">	
+							<div class="eight wide field" ref="edtFrmAdminEmailFrame">
+								<label>Angsuran Per Bulan</label>
+								<input ref="edtFrmInstallment" type="text" maxlength="255" disabled="" >
+							</div>
+							<div class="eight wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Sisa Outstanding Debitur</label>
+								<input ref="edtFrmOutstanding" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">	
+							<div class="six wide field" ref="edtFrmAdminEmailFrame">
+								<label>Tanggal Mulai Menunggak</label>
+								<input ref="edtFrmTglMenunggak" type="text" maxlength="255" disabled="" >
+							</div>
+							<div class="six wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Tanggal SP1</label>
+								<input ref="edtFrmTglSp1" type="text" maxlength="255" disabled="">
+							</div>
+                                                        <div class="five wide field" ref="edtFrmAdminEmailAltFrame">
+								<label>Tanggal SP2</label>
+								<input ref="edtFrmTglSp2" type="text" maxlength="255" disabled="">
+							</div>
+						</div>
+                                                <div class="fields">
+                                                    <div class="sixteen wide field" ref="edtFrmAdminEmailFrame">
+                                                        <label>Kronologi</label>
+                                                        <textarea ref="edtFrmKronologi" style="min-height:100px" rows="3" maxlength="255" disabled=""></textarea>
+                                                    </div>
+                                                </div>
+
+					</div>
+				</div>
+			 </form>	
+		</div>
+	</div>
+
+	<script>
+
+		var tag = this;
+                
+		tag.on("mount", function() {
+                    
+                        document.getElementById("sDater").style.display = "none";
+                        document.getElementById("nDater").style.display = "none";
+                        document.getElementById("validater").style.display = "none";
+                        
+			tag.updateProduct(1);
+                        
+                        $('#rangestart').calendar({
+			  type: 'date',
+			  endCalendar: $('#rangeend')
+			});
+			$('#rangeend').calendar({
+			  type: 'date',
+			  startCalendar: $('#rangestart')
+			});
+		});
+                
+                orderBy() {
+
+			if(tag.refs.edtOrderBy.value == "TanggalUpload"){
+				document.getElementById("sDater").style.display = "block";
+				document.getElementById("nDater").style.display = "block";
+				document.getElementById("filterr").style.display = "none";
+				document.getElementById("validater").style.display = "block";
+
+                        validater
+			}
+			else {
+				document.getElementById("sDater").style.display = "none";
+				document.getElementById("nDater").style.display = "none";
+				document.getElementById("filterr").style.display = "block";
+
+				document.getElementById("validater").style.display = "none";
+
+			}
+                    }
+                
+                btnDetailClick(e) {
+                    
+                    tag.refs.edtFrmNoAggrement.value = e.item.item.noAggrement;
+                    tag.refs.edtFrmNama.value = e.item.item.namaDebitur;
+                    tag.refs.edtFrmAlamatKtpt.value = e.item.item.alamatKtp;
+                    tag.refs.edtFrmZipcode.value = e.item.item.zipcodeKtp;
+                    tag.refs.edtFrmProvinsiKtp.value = e.item.item.provinsiKtp;
+                    tag.refs.edtFrmKotaKtp.value = e.item.item.kotaKtp;
+                    tag.refs.edtFrmKecamatanKtp.value = e.item.item.kecamatanKtp;
+                    tag.refs.edtFrmKelurahanKtp.value = e.item.item.kelurahanKtp;
+                    tag.refs.edtFrmAlamatTgl.value = e.item.item.alamatTinggal;
+                    tag.refs.edtFrmZipcodeTgl.value = e.item.item.zipcodeTinggal;
+                    tag.refs.edtFrmProvinsiTgl.value = e.item.item.provinsiTinggal;
+                    tag.refs.edtFrmKotaTgl.value = e.item.item.kotaTinggal;
+                    tag.refs.edtFrmKecamatanTgl.value = e.item.item.kecamatanTinggal;
+                    tag.refs.edtFrmKelurahanTgl.value = e.item.item.kelurahanTinggal;
+                    tag.refs.edtFrmPhone.value = e.item.item.noTelp;
+                    tag.refs.edtFrmJenis.value = e.item.item.jenisPerjanjian;
+                    tag.refs.edtFrmTglPerjanjian.value = e.item.item.tglPerjanjian
+                    tag.refs.edtFrmMerek.value = e.item.item.merkKendaraan;
+                    tag.refs.edtFrmTahunKendaraan.value = e.item.item.tahunKendaraan;
+                    tag.refs.edtFrmNopol.value = e.item.item.nomorPolisi;
+                    tag.refs.edtFrmKondisi.value = e.item.item.kondisiKendaraan;
+                    tag.refs.edtFrmNoRangka.value = e.item.item.nomorRangka;
+                    tag.refs.edtFrmNoMesin.value = e.item.item.nomorMesin;
+                    tag.refs.edtFrmWarna.value = e.item.item.warna;
+                    tag.refs.edtFrmNoBpkb.value = e.item.item.nomorBpkb;
+                    tag.refs.edtFrmAnBpkb.value = e.item.item.atasNamaBpkb;
+                    tag.refs.edtFrmAlamatBpkb.value = e.item.item.alamatBpkb;
+                    tag.refs.edtFrmNoStnk.value = e.item.item.nomorStnk;
+                    tag.refs.edtFrmFidusia.value = e.item.item.sertifikatJaminan;
+                    tag.refs.edtFrmTglMenunggak.value = e.item.item.tglMulaiMenunggak;
+                    tag.refs.edtFrmInstallment.value = e.item.item.installment;
+                    tag.refs.edtFrmOutstanding.value = e.item.item.sisaOutstanding;
+                    tag.refs.edtFrmTglMenunggak.value = e.item.item.tglMulaiMenunggak;
+                    tag.refs.edtFrmTglSp1.value = e.item.item.tglSp1;
+                    tag.refs.edtFrmTglSp2.value = e.item.item.tglSp2;
+                    tag.refs.edtFrmKronologi.value = e.item.item.kronologi;
+
+                    $(tag.refs.mdlProduct)
+				.modal({
+                                    
+                                    allowMultiple: true,
+						onApprove : function() {
+                                                    
+                                                    financeService.getbynoaggre(
+                                                        function(ret, errorCode, errorMsg) {
+
+                                                        tag.listDetail = ret;
+                                                        tag.update();
+                                                        }); 
+                                                    
+                                                }
+                                    
+                                })
+                                .modal('show');
+                }
+
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+                    
+                    tag.currentPage = page;
+                    
+                        var sDate;
+			var eDate;
+			var sDateStr = "";
+			var eDateStr = "";
+                        
+                        if(tag.refs.edtOrderBy.value == "TanggalUpload"){
+                            
+                            if($(tag.refs.startDate).calendar("get date") != null) {
+                                           sDate = dateToStr($(tag.refs.startDate).calendar("get date"));
+                                           sDate = strToDateTime(sDate + " " + "00" + ":" +  "00" + ":" + "00");
+                                           sDateStr = dateTimeToStr(sDate);
+                            }
+
+                            if($(tag.refs.endDate).calendar("get date") != null) {
+                                    eDate = dateToStr($(tag.refs.endDate).calendar("get date"));
+                                    eDate = strToDateTime(eDate + " " + "23" + ":" + "59" + ":" + "59");
+                                    eDateStr = dateTimeToStr(eDate);
+                            }   
+                        } else {
+                            sDateStr = "";
+                            eDateStr = "";
+                        }
+
+			financeService.search(tag.refs.edtOrderBy.value,
+                                            tag.refs.edtFilter.value,
+                                            sDateStr,
+                                            eDateStr,
+                                            tag.currentPage,
+				function(ret, errorCode, errorMsg) {
+				
+                                if(errorMsg == null) {
+                                    
+                                    if(ret.length > 0) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();	
+                                    } else {
+                                        
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+                                
+//                                if(tag.refs.edtOrderBy.value == 'TanggalUpload') {
+//                                    setTimeout(
+//                                                    function() {
+//
+//                                                            tag.ddbEditOrderBy();
+//                                                    }, 100);
+//                                }
+                                    
+				});
+		}
+                
+//                ddbEditOrderBy() {
+//                    
+//                    $(tag.refs.mdlDate)
+//				.modal({
+//                                    
+//                                    allowMultiple: true,
+//						onApprove : function() {
+//                                                    
+//                                                    financeService.getbynoaggre(
+//                                                        function(ret, errorCode, errorMsg) {
+//
+//                                                        tag.listDetail = ret;
+//                                                        tag.update();
+//                                                        }); 
+//                                                    
+//                                                }
+//                                    
+//                                })
+//                                .modal('show');
+//                }
+                    
+                    
+                
+
+		updateProduct1() {
+
+			financeService.listall(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct = ret;
+					tag.update();
+				});
+		}
+		
+		btnExport() {
+
+		var wb = new Workbook();
+		var ws = wb.addSheet("Collector Agent");
+
+		var lines = [];
+		lines.push(['ID Collector']);
+
+		lines.push([
+				"&A1&",
+			]);
+			
+
+			ws.addCell(lines, 0, 0);
+			wb.save("Collector.xlsx");
+		}
+                
+            ExportToTableExcel(){
+             
+               var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;  
+               tag.update();
+               setTimeout(
+                        function() {
+
+                                    if (regex.test($("#excelfile").val().toLowerCase())) {
+
+                                    var formData = new FormData();
+                                    const selectedFile = document.getElementById('excelfile').files[0];
+                                    formData.append("file",selectedFile );
+                                    tag.result = null;
+                                    var conf = confirm('Are you sure want to upload this file?');
+                                    if(conf == true){
+                                         financeService.getfileexcel(formData, 
+                                               function(ret, errorCode, errorMsg) {
+                                                 if (errorCode == null) {
+                                                      tag.result = ret;
+                                                       app.alert("Upload File Success!");
+                                                       tag.updateProduct(1);
+
+                                                   }else{
+                                                       tag.result = ret;
+                                                       app.alert("Upload Failed!");
+                                                   }
+
+                                               });         
+                                   }
+
+                                   }
+                                                 
+                                             
+                                                 
+               }, 100);                                  
+           }  
+           
+//            var value = tag.refs.edtOrderBy.value;
+//            var text = document.getElementById("start");
+//            var end = document.getElementById("end")
+//            if (document.referrer.valueOf("edtOrderBy") == "TanggalUpload"){
+//              text.style.display = "block";
+//              end.style.display = "block";
+//            }
+			
+	</script>
+</konsumen>

@@ -1,0 +1,45 @@
+<login>
+	<div style="position: fixed; left: 50%; top: 40%; width: 400px; height: 400px; margin-left: -200px; margin-top: -200px;">
+		<div class="ui raised card">
+			<div class="content">
+				<div class="header" align="center">
+					<img src="img/logo.png"/>
+				</div>
+				<div class="description">
+					<div class="ui fluid icon input" style="margin-bottom: 5px">
+  						<input ref="edtUserId" type="text" placeholder="UserID">
+  						<i class="user icon"></i>
+					</div>
+					<div class="ui fluid icon input" style="margin-bottom: 8px">
+  						<input ref="edtPassword" type="password" placeholder="Password">
+  						<i class="asterisk icon"></i>
+					</div>
+					<button class="ui blue button fluid" onclick={ btnLoginClick }>Login</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		
+		var tag = this;
+
+		btnLoginClick() {
+		
+                    
+			userService.login(tag.refs.edtUserId.value,
+								tag.refs.edtPassword.value,
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.parent.login(ret);
+					}
+					else
+						app.alert("Login Gagal", errorMsg);					
+				});
+                                	
+		}
+
+	</script>
+</login>

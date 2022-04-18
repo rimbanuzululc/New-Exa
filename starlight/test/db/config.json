@@ -1,0 +1,8 @@
+{
+    "db": {
+        "url"           : "jdbc:postgresql://localhost:5432/ecomm",
+        "driver_class"  : "org.postgresql.Driver",
+        "user"          : "postgres",
+        "password"      : "admin"
+    }
+}

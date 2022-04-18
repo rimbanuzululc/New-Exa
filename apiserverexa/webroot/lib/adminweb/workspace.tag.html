@@ -1,0 +1,161 @@
+<workspace>
+	<div ref="header" style="width: 100%; height: 60px; background-color: #FFFFFF; box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.32); z-index: 99; font-size: 0px;">
+		<div ref="headerLogo" style="display: inline-block; font-size: 12px; width: 230px; height: 100%; border-right: 1px solid #CBCBCB; vertical-align: top;">
+			<img src="img/logo.png" style="width: 52px; height: 52px; margin-left: 10px; margin-top: 5px">
+		</div>
+		<div style="display: inline-block; font-size: 12px; width: 50px; height: 100%; border-right: 1px solid #CBCBCB; vertical-align: top;">
+			<i class="bars icon" style="font-size: 28px; color: #999999; margin-left: 8px; margin-top: 20px;cursor: pointer;" onclick={ drawerClick }></i>
+		</div>
+		<div ref="headerSpace" style="display: inline-block; font-size: 12px; width: calc(100% - 340px); height: 100%; vertical-align: top;">
+			<div style="font-weight: bold; font-size: 22px; text-align: right;margin-right: 10px; padding-top: 20px;">{ userName }</div>
+		</div>
+		<div style="display: inline-block; font-size: 12px; width: 60px; height: 100%; border-left: 1px solid #CBCBCB; vertical-align: top;">
+			<button class="ui compact red icon button" style="position: relative; left: 50%; top: 50%; margin-left: -16px; margin-top: -14px" onclick={ btnLogoutClick }>
+				<i class="x icon"></i>
+			</button>
+		</div>
+	</div>
+	<div style="width: 100%; height: calc(100% - 60px); font-size: 0;top; z-index: 10;"> 
+		
+		<div ref="menu" each={ item in menuList} style="width: 230px; height: 100%; background-color: #1D2939; color: #FFFFFF; display: inline-block; font-size: 20px; padding-left: 10px; padding-top: 10px; vertical-align: top;user-select: none;" >
+
+				<div each={ subitem in item.subMenu } style="width: 100%; height: 32px; line-height: 32px; color: #CCCCCC; padding-left: 10px; font-size: 20px; cursor: pointer;" onclick={ menuClick }>
+                                     <span style="color: #EEEEEE; font-size: 16px; top: 2px;position: relative;"><B><u>{ subitem.title }</u></b></span>
+					<div style="position: absolute; right: 0px; top: 3px">
+					</div>
+				</div>				
+		</div>
+		<div ref="workarea" style="width: calc(100% - 230px); height: 100%; display: inline-block; font-size: 12px; vertical-align: top;">
+			<div data-is={ activeModule } param={ activeParam }></div>			
+		</div>
+	</div>
+
+	<script>
+		
+		var tag = this;
+
+		window.workspace = tag;
+		
+		tag.drawerVisible = true;
+		tag.menuList = [];
+		tag.activeModule = null;
+
+		tag.on("mount", function() {
+
+			tag.userName = tag.parent.getUserId();
+			tag.getMenu();
+		});
+
+		getMenu() {
+///*                    
+                    userService.role(tag.parent.getUserId(),
+				function(ret, errorCode, errorMsg) {
+
+					if (errorCode == null) {
+
+						tag.menuList = ret;
+						tag.update();
+					}
+					else
+						app.alert(errorCode,errorMsg);
+					
+				});	
+/*
+			var menuList = [
+								{
+									id : 1,
+									subMenu : [
+										{
+											icon : "user secret",
+											title : "Konsumen",
+											target : "collector1"
+										},
+										{
+											icon : "user secret",
+											title : "Data Somasi",
+											target : "collector2"
+										},
+										{
+											icon : "user secret",
+											title : "Assign Agent Pos",
+											target : "collector3"
+										},
+										{
+											icon : "user secret",
+											title : "Menu",
+											target : "menu"
+										},
+										{
+											icon : "user secret",
+											title : "Role",
+											target : "role"
+										},
+										{
+											icon : "user secret",
+											title : "User",
+											target : "user"
+										}
+									]
+								}
+							];
+                                                       
+
+			tag.menuList = menuList;
+			tag.update();
+                        */
+                         
+		}
+
+		drawerClick() {
+
+			tag.drawerVisible = !tag.drawerVisible;
+
+			if (tag.drawerVisible) {
+
+				tag.refs.headerLogo.style.display = "inline-block";
+				tag.refs.headerSpace.style.width = "calc(100% - 340px)";
+
+				tag.refs.menu.style.display = "inline-block";
+				tag.refs.workarea.style.width = "calc(100% - 230px)";
+			}
+			else {
+
+				tag.refs.headerLogo.style.display = "none";
+				tag.refs.headerSpace.style.width = "calc(100% - 150px)";
+
+				tag.refs.menu.style.display = "none";
+				tag.refs.workarea.style.width = "100%";
+			}
+		}
+
+		groupClick(e) {
+			
+			var subMenu = this.refs["submenu_" + e.item.item.id];
+
+			if (subMenu != null) {
+
+				if (subMenu.style.display == "none")
+					subMenu.style.display = "";
+				else
+					subMenu.style.display = "none";
+			}
+		}
+
+		menuClick(e) {
+
+			tag.setActiveModule(e.item.subitem.target, null);
+		}
+
+		btnLogoutClick() {
+
+			tag.parent.logout();
+		}
+
+		setActiveModule(target, param) {
+
+			tag.activeModule = target;
+			tag.activeParam = param;
+			tag.update();	
+		}
+	</script>
+</workspace>

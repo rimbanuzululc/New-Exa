@@ -1,0 +1,231 @@
+<collector3>
+	<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Assagin Agent Pos</span>
+				<br>
+				<span style="font-size: 16px; color: #008080">List Agent Pos</span>
+			</div>			
+		</div>
+            <div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		<div class="ui card" style="width: 100%; height: calc(100% - 70px)">
+			<div class="content" style="margin: 20px;">
+
+				<div class="ui form" style="padding: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="1px">&nbsp;</td>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">									
+									<div class="three wide field">
+									    <label> Search By</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy">
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="REFNumber">REF Number</option>
+										    	<option value="CardNumber">Card Number</option>
+										    	<option value="StatusPengiriman">Status Pengiriman</option>
+			    							</select>
+								  	</div>
+									<div class="three wide field" >
+										<label>Filter :</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>										
+							  	</div>	
+							</td>
+							<td width="*" align="right">
+								
+							</td>	
+						</tr>
+					</table>	
+				</div>
+				<div style="padding: 5px; height: calc(100% - 165px)">
+					<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+						<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+				  			<thead>
+				    			<tr>
+				    				<th style="position: -webkit-sticky;position: sticky;top: 0;">Check All</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">Nama Debitur</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">REF Number</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">Card Number</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">Address City</th>
+				      				<th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Assign</th>
+				      			</tr>
+				  			</thead>
+							<tbody>
+								<tr each={ item in listProduct}>
+									<td><div class="ui checkbox">
+											<input type="checkbox" 
+											name ="tabCheckBox"
+											value= { item.idKonsumen } >
+											<label>&nbsp;</label>
+										</div>
+									</td>
+									<td>{ item.name }</td>
+									<td>{ item.ref_No }</td>
+									<td>{ item.cardNo }</td>
+									<td>{ item.address_1_city }</td>
+									<td>{ item.assignDate }</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div style="position: absolute; bottom: 10px; left : 30%">
+					<div class="ui form">
+						<table width="100%">
+							<tr>
+								<td width="1px">&nbsp;</td>
+								<td width="1500px">
+									<div class="fields" style="padding-left: 8px !important">									
+										<div class="three wide field">
+										    <label> Assign to :</label>
+											    <select class="ui fluid dropdown"  ref="edtFrmAsigen">
+                                                                                                <option value="-">Agent Name</option>
+											    	<option each={ item in listProduct1 } value={ item.idAgentpos }>{ item.username }</option>
+				    							</select>
+									  	</div>
+										<div class="three wide field" >
+											<label>&nbsp;</label>
+											<div class="ui button float right blue"  style="margin-left: 1px" onclick={ btnAssingn }>Assign</div> 
+										</div>										
+								  	</div>	
+								</td>
+								<td width="*" align="right">
+									
+								</td>	
+							</tr>
+						</table>	
+					</div>
+				</div>
+
+				</div>
+				<div style="position: absolute; bottom: 10px">
+					<div class="ui buttons">
+						<button class="ui icon button" onclick={ btnPrevClick }>
+							<i class="left chevron icon"></i>
+						</button>
+						<button each={ item in listPageNo } class="ui button">{ item }</button>
+						<button class="ui right icon button" onclick={ btnNextClick }>
+							<i class="right chevron icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+            </div>
+	</div>
+
+	<script>
+
+		var tag = this;
+		
+		tag.on("mount", function() {
+
+			tag.updateProduct(1);
+                        tag.updateProduct1();
+		});
+
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+                    
+                    tag.currentPage = page;
+		
+			addressService.search(tag.refs.edtOrderBy.value,
+                                                tag.refs.edtFilter.value,
+                                                tag.currentPage,
+                                                
+				function(ret, errorCode, errorMsg) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();	
+						
+				});
+                }
+
+		updateProduct1() {
+
+			addressService.listAgent(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct1 = ret;
+					tag.update();
+				});
+		}
+
+		btnAssingn() {
+
+				var checkBoxes = document.getElementsByName("tabCheckBox");
+				var lines = [];
+
+				for (i = 0; i< checkBoxes.length; i++){
+                                        
+                                    var a = checkBoxes[i].value
+                                        
+					if (checkBoxes[i].checked){
+						lines.push( 
+							checkBoxes[i].value	
+						);
+					}
+                                    }
+                                    
+                                    addressService.addAssignt({
+                                            listIdKonsumen : lines,
+                                            idAgentPos : tag.refs.edtFrmAsigen.value
+                                        },
+                                        function(ret, errorCode, errorMsg) {
+                                          if (errorCode == null) {
+
+                                               app.alert("Berhasil");
+                                        }
+                                        else
+                                                app.alert(errorMsg);
+                                        });
+                                
+                                
+                }
+		
+		btnExport() {
+
+		var wb = new Workbook();
+		var ws = wb.addSheet("Collector Agent");
+
+		var lines = [];
+		lines.push(['ID Collector']);
+
+		lines.push([
+				"&A1&",
+			]);
+			
+
+			ws.addCell(lines, 0, 0);
+			wb.save("Collector.xlsx");
+		}
+		
+
+			
+	</script>
+</collector3>

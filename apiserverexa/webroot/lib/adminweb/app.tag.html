@@ -1,0 +1,115 @@
+<app>
+	<div data-is={ activeMode }></div>
+
+	<div ref="modal" class="ui tiny modal">
+		<div class="header"><i class="{ modalIcon } icon"></i>&nbsp;{ modalHeader }</div>
+		<div class="content">{ modalMsg }</div>
+		<div class="actions">
+		    <div class="ui approve button green">{ btnOKTitle }</div>
+		    <div if={ btnCancelVisible } class="ui cancel button red" style="margin-left: 1px">{ btnCancelTitle }</div>
+		</div>
+	</div>
+	
+	<script>
+
+		var tag = this;
+
+		tag.activeMode = "login";
+		
+		tag.btnCancelVisible = true;
+		tag.btnOKTitle = "OK";
+		tag.btnCancelTitle = "Cancel";
+
+		window.app = this;
+
+		login(loginResult) {
+
+			tag.loginResult = loginResult;
+			tag.setActiveMode("workspace");
+		}
+
+		logout() {
+
+			tag.loginResult = null;
+			tag.setActiveMode("login");
+		}
+
+		getvendorId() {
+
+			return null;
+		}
+                
+                getUserId() {
+
+			return tag.loginResult.userId;
+		}
+
+		getEmail() {
+
+			return null;
+		}
+
+		getAccessToken() {
+
+			return null;
+		}
+
+		setActiveMode(mode) {
+
+			this.activeMode = mode;
+			tag.update();
+		}
+
+		alert(header, msg) {
+
+			if (msg == null) {
+				msg = header;
+				header = "Alert";
+			}
+
+			tag.modalIcon = "exclamation triangle";
+			tag.modalHeader = header;
+			tag.modalMsg = msg;
+
+			tag.btnOKTitle = "OK";
+			tag.btnCancelVisible = false;
+
+			tag.update();
+
+			$(tag.refs.modal)
+				.modal({ allowMultiple: true })
+				.modal('show'); 
+		}
+
+		confirm(header, msg, cb) {
+
+			if (cb == null) {
+
+				cb = msg;
+				msg = header;				
+				header = "Confirm"
+			}
+
+			tag.modalIcon = "question circle outline";
+			tag.modalHeader = header;
+			tag.modalMsg = msg;
+			
+			tag.btnOKTitle = "Yes";
+			tag.btnCancelVisible = true;
+			tag.btnCancelTitle = "No";
+
+			tag.update();
+
+			$(tag.refs.modal)
+				.modal({ 
+							allowMultiple: true,
+							onApprove : function() { 
+
+											if (cb != null)
+												cb();
+										} 
+						})
+				.modal('show'); 
+		}
+	</script>
+</app>

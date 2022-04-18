@@ -1,0 +1,333 @@
+<collector1>
+    <div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+		
+		<div>
+			<div style="display: inline-block; vertical-align: top; padding-top: 12px;">
+				<i class="clipboard icon" style="font-size: 42px"></i>
+			</div>
+			<div style="display: inline-block; vertical-align: top; margin-left: 12px;">
+				<span style="font-size: 24px">Konsumen</span>
+				<br>
+				<span style="font-size: 16px; color: #999999">Konsumen List</span>
+			</div>			
+		</div>
+		<div style="width: 100%; height: 100%; padding-left: 15px; padding-right: 15px; padding-bottom: 15px; padding-top: 25px; overflow: hidden;">
+			<div class="ui card" style="width: 100%; height: calc(95% - 70px)">
+				<div class="content" style="margin: 10px;height: 100%">
+				<div class="ui form">
+						<table width="100%">
+						<tr>
+							<td width="1px">
+								&nbsp;
+							</td>
+                                                        <td width="5%">
+                                                            <span>Project :</span>
+                                                        </td>
+                                                        <td width="10%">
+                                                            <select class="ui fluid dropdown"  ref="">
+                                                                <option value="NamaDebitur">Finance</option>
+                                                                <option value="REFNumber">Credit Card</option>
+                                                            </select>
+                                                        </td>
+                                                        <td width="1px">
+								&nbsp;
+							</td>
+							<td width="30%">
+							<input ref="fileexcel" type="file" name="file" id="excelfile"  multiple />
+							</td>
+							<td width="*">
+								<div class="ui button float right red"  style="margin-left: 1px" onclick={ ExportToTableExcel }>Upload</div> 
+							</td>	
+						</tr>
+					</table>	
+                                    </div>
+					<div class="ui form">
+						<table width="100%">
+                                                    
+							<td width="1px">&nbsp;</td>
+							<td width="1500px">
+								<div class="fields" style="padding-left: 8px !important">									
+									<div class="three wide field">
+                                                                            <label>&nbsp;</label>
+										    <select class="ui fluid dropdown"  ref="edtOrderBy">
+                                                                                        <option value="NamaDebitur" disabled selected>Search By</option>
+										    	<option value="NamaDebitur">Nama Debitur</option>
+										    	<option value="NoAgreement">No Agreement</option>
+										    	<option value="TahunKendaraan">Tahun Kendaraan</option>
+										    	<option value="NomorPolisi">Nomor Polisi</option>
+                                                                                        <option value="StatusSomasi">Status Somasi</option>
+                                                                                        <option value="TanggalUpload" id="date">Tanggal Upload</option>
+			    							</select>
+								  	</div>
+                                                                        <div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+                                                                            <div class="ui calendar" id="rangestart" ref="startDate">
+                                                                              <div class="ui input left icon">
+                                                                                <i class="calendar icon"></i>
+                                                                                <input type="text" placeholder="Start">
+                                                                              </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+                                                                            <div class="ui calendar" id="rangeend" ref="endDate">
+                                                                              <div class="ui input left icon">
+                                                                                <i class="calendar icon"></i>
+                                                                                <input type="text" placeholder="End">
+                                                                              </div>
+                                                                            </div>
+                                                                        </div>
+									<div class="three wide field" >
+                                                                            <label>&nbsp;</label>
+										<div class="ui action input">
+											<input ref="edtFilter" type="text" placeholder="Filter..." onkeydown = "if (event.keyCode == 13)
+                							document.getElementById('btnsearch').click()">
+											<button id="btnsearch" class="ui button" onclick={ btnSearchClick }>Search</button>
+										</div>
+									</div>										
+							  	</div>	
+							</td>
+							<td width="*" align="right">
+								
+							</td>	
+						</table>	
+					</div>
+					<div style="padding: 5px; height: calc(100% - 100px)">
+						<div style="height: 100%; overflow: auto;border-top: 1px solid rgba(34, 36, 38, 0.15);">
+							<table class="ui selectable celled table" style="font-size: 14px;border-top: 0px solid rgba(34, 36, 38, 0);border-radius: 0px">
+                                                                    <thead>
+                                                                    <tr>
+                                                                            <th style="position: -webkit-sticky;position: sticky;top: 0;">No.</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Name Debitur</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">REF Number</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Card Number</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Address City</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Upload</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Assign</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Status Penggiriman</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Tanggal Penggiriman</th>
+                                                                            <th style="250px: -webkit-sticky;position: sticky;top: 0;">Kesimpulan Kasus Debitur</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                            <tr each={ item in listProduct}>
+                                                                                    <td>{ item.idKonsumen }</td>
+                                                                                    <td>{ item.name }</td>
+                                                                                    <td>{ item.ref_No }</td>
+                                                                                    <td>{ item.cardNo }</td>
+                                                                                    <td>{ item.address_1_city }</td>
+                                                                                    <td>{ item.upload_date }</td>
+                                                                                    <td>{ item.assignDate }</td>
+                                                                                    <td>-</td>
+                                                                                    <td>-</td>
+                                                                                    <td>-</td>
+                                                                            </tr>
+                                                                    </tbody>
+							</table>
+						</div>	
+					
+						
+					</div>	
+                                    <div style="padding: 5px;" style="position: absolute; bottom: 10px">
+                                            <div class="ui buttons">
+                                                    <button class="ui icon button" onclick={ btnPrevClick }>
+                                                            <i class="left chevron icon"></i>
+                                                    </button>
+                                                    <button each={ item in listPageNo } class="ui button">{ item }</button>
+                                                    <button class="ui right icon button" onclick={ btnNextClick }>
+                                                            <i class="right chevron icon"></i>
+                                                    </button>
+                                            </div>
+                                    </div>
+				</div>			
+			</div>		
+		</div>
+	</div>
+
+	<div ref="mdluser" class="ui modal longer">
+		
+		<div class="header">{ modalHeader }</div>
+		<div class="scrolling image content">
+			
+			<form class="ui large form" style="width: 100%">
+
+				<div class="fields">
+					<div class="six wide field" ref="edtFrmIdFrame">
+					    <label>user id</label>
+					    <input ref="edtFrmId" type="text">
+				  	</div>
+					<div class="six wide field" ref="edtFrmNameFrame">
+					    <label>user Name</label>
+					    <input ref="edtFrmName" type="text">
+				  	</div>
+				  	<div class="six wide field" ref="edtFrmPasswordFrame">
+					    <label>Password</label>
+					    <input ref="edtFrmPassword" type="text">
+				  	</div>
+				  <div class="six wide field" ref="ddbFrmRoleFrame" >
+					    <label>Role</label>
+					    <select class="ui fluid dropdown" ref="ddbFrmRole">
+							<option each={ item in listRoleMdl } value={ item.roleId }>{ item.name }</option>
+						</select>
+				  	</div>	
+				</div>
+				
+			</form>	
+		</div>
+		<div class="actions">
+		    <div class="ui approve button green">Save</div>
+		    <div class="ui cancel button red" style="margin-left: 1px">Cancel</div>
+		</div>
+	</div>
+
+	<script>
+
+		var tag = this;
+                
+		tag.on("mount", function() {
+
+			tag.updateProduct(1);
+                        
+                        $('#rangestart').calendar({
+			  type: 'date',
+			  endCalendar: $('#rangeend')
+			});
+			$('#rangeend').calendar({
+			  type: 'date',
+			  startCalendar: $('#rangestart')
+			});
+		});
+
+		btnSearchClick() {
+
+			tag.updateProduct(1);
+		}
+
+		btnPrevClick() {
+
+			if (tag.currentPage > 1)
+				tag.updateProduct(tag.currentPage - 1);
+		}
+
+		btnNextClick() {
+
+			if (tag.currentPage < tag.maxPage)
+				tag.updateProduct(tag.currentPage + 1);
+		}
+
+		updateProduct(page) {
+                    
+                    tag.currentPage = page;
+                    
+                        var sDate;
+			var eDate;
+			var sDateStr = "null";
+			var eDateStr = "null";
+                        
+                        if($(tag.refs.startDate).calendar("get date") != null) {
+                                        sDate = dateToStr($(tag.refs.startDate).calendar("get date"));
+                                        sDate = strToDateTime(sDate + " " + "00" + ":" +  "00" + ":" + "00");
+                                        sDateStr = dateTimeToStr(sDate);
+                        }
+
+                        if($(tag.refs.endDate).calendar("get date") != null) {
+                                eDate = dateToStr($(tag.refs.endDate).calendar("get date"));
+                                eDate = strToDateTime(eDate + " " + "23" + ":" + "59" + ":" + "59");
+                                eDateStr = dateTimeToStr(eDate);
+                        }
+
+			addressService.search(tag.refs.edtOrderBy.value,
+                                            tag.refs.edtFilter.value,
+                                            tag.currentPage,
+				function(ret, errorCode, errorMsg) {
+				
+                                if(errorMsg == null) {
+                                    
+                                    if(ret.length > 0) {
+                                        
+                                        tag.maxPage = 10;
+                                        tag.listProduct = ret;
+                                        tag.update();	
+                                    } else {
+                                        
+                                        app.alert("Data Not Found");
+                                    }
+                                } else {
+                                    app.alert(errorMsg);
+                                }
+                                    
+				});
+		}
+
+		updateProduct1() {
+
+			addressService.listall(
+				function(ret, errorCode, errorMsg) {
+
+					tag.listProduct = ret;
+					tag.update();
+				});
+		}
+		
+		btnExport() {
+
+		var wb = new Workbook();
+		var ws = wb.addSheet("Collector Agent");
+
+		var lines = [];
+		lines.push(['ID Collector']);
+
+		lines.push([
+				"&A1&",
+			]);
+			
+
+			ws.addCell(lines, 0, 0);
+			wb.save("Collector.xlsx");
+		}
+                
+            ExportToTableExcel(){
+             
+               var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;  
+               tag.update();
+               setTimeout(
+                        function() {
+
+                                    if (regex.test($("#excelfile").val().toLowerCase())) {
+
+                                    var formData = new FormData();
+                                    const selectedFile = document.getElementById('excelfile').files[0];
+                                    formData.append("file",selectedFile );
+                                    tag.result = null;
+                                    var conf = confirm('Are you sure want to upload this file?');
+                                    if(conf == true){
+                                         addressService.getfileexcel(formData, 
+                                               function(ret, errorCode, errorMsg) {
+                                                 if (errorCode == null) {
+                                                      tag.result = ret;
+                                                       app.alert("Upload File Success!");
+                                                   }else{
+                                                       tag.result = ret;
+                                                       app.alert("Upload Failed!");
+                                                   }
+
+                                               });         
+                                   }
+
+                                   }
+                                                 
+                                             
+                                                 
+               }, 100);                                  
+           }  
+           
+//            var value = tag.refs.edtOrderBy.value;
+            var text = document.getElementById("start");
+            var end = document.getElementById("end")
+            if (document.referrer.valueOf("edtOrderBy") == "TanggalUpload"){
+              text.style.display = "block";
+              end.style.display = "block";
+            }
+			
+	</script>
+</collector1>

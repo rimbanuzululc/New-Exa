@@ -1,0 +1,81 @@
+<html>
+<head>
+	<title>SOMASI DANCONS</title>
+
+	<!-- jquery -->    
+    <!-- <script src="lib/jquery/jquery-3.3.1.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+
+    <!-- semnticui -->
+    <link rel="stylesheet" type="text/css" href="lib/semanticui/semantic.min.css">
+    <script src="lib/semanticui/semantic.min.js"></script>
+
+    <!-- calendar -->
+    <link rel="stylesheet" type="text/css" href="lib/calendar/calendar.min.css">
+	<script async src="lib/calendar/calendar.min.js"></script> 
+
+    <script src="lib/adminweb/service/commonservice.js"></script>
+  
+    <script async src="lib/adminweb/service/konsomenservice.js"></script>
+    <script async src="lib/adminweb/service/financeservice.js"></script>
+    <script async src="lib/adminweb/service/roleservice.js"></script>
+    <script async src="lib/adminweb/service/userservice.js"></script>
+   
+    <style type="text/css">
+    	body 	{
+    				margin: 0px 0px 0px 0px;
+    				padding: 0px 0px 0px 0px;
+    				overflow: hidden;
+    				background-color: #F1F4F9; 
+    			}
+    </style>
+
+    <script type="text/javascript">
+        
+        tagList = [
+                        "lib/adminweb/konsumen/assigenagentpos.tag.html",
+                        "lib/adminweb/konsumen/datasomasi.tag.html",
+                        "lib/adminweb/konsumen/konsumen.tag.html",
+                        "lib/adminweb/setting/user.tag.html",
+                        "lib/adminweb/setting/role.tag.html",
+                        "lib/adminweb/konsumenAggrement/assigenagentpos.tag.html",
+                        "lib/adminweb/konsumenAggrement/datasomasi.tag.html",
+                        "lib/adminweb/konsumenAggrement/konsumen.tag.html",
+                        "lib/adminweb/konsumenAggrement/agentpos.tag.html",
+                        "lib/adminweb/setting/menu.tag.html",
+                        "lib/adminweb/konsumenAggrement/mra.tag.html"
+                    ];
+
+        function loadTag() {
+            
+            if (tagList.length > 0) {
+
+                var lib = tagList.shift();
+
+                console.log("load async : " + lib);
+
+                riot.compile(lib,
+                    function() {
+
+                        loadTag();
+                    });
+            }
+        }
+    </script>
+</head>
+<body onload="loadTag()">
+    <app></app>
+
+    <script type="riot/tag" src="lib/adminweb/app.tag.html"></script>
+    <script type="riot/tag" src="lib/adminweb/login.tag.html"></script>
+    <script type="riot/tag" src="lib/adminweb/workspace.tag.html"></script>
+    <script type="riot/tag" src="lib/adminweb/loading-page.tag.html"></script>
+    
+    <script src="lib/riotjs/riot+compiler.min.js"></script>
+    
+    
+    
+    <!-- <script type="text/javascript" src="https://rawgit.com/riot/riot/master/riot%2Bcompiler.min.js"></script> -->
+    <script>riot.mount("app")</script>
+</body>
+</html>

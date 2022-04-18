@@ -1,0 +1,45 @@
+{
+    "mainVerticle" : "com.bsi.exa.apiserver.APIVerticle",
+    "display" : "Exa API Server",
+    "exa": {
+
+        "restapi" : {
+            
+            "port" : 8080,
+            "allowedURL" :{
+                                "ALL" : [   
+                                            "/*.html$",
+                                            "/*/lib/",
+                                            "/*/img/",
+                                            "/*/css/",
+                                            "/*.html$",
+                                            "/*/lib/*",
+                                            "/*/img/*",
+                                            "/*/css/*",
+                                            "/user/login"
+                                            
+                                        
+                                        ],
+                                "GET" : [
+                                          "/",
+                                          "/menu/*",
+                                          "/role/*",
+                                          "/user/*"
+                                        ],
+                                "POST" : [
+                                            "/menu/*",
+                                            "/role/*"
+                                        ], 
+                                "PUT" : [
+                                            "/menu/*",
+                                            "/role/*",
+                                            "/user/*"  
+                                        ], 
+                                "DELETE" : [
+                                        ]
+                            }
+        }
+    },
+    
+    "uploadDirectory" : "/home/somasi/excelFile"
+}
